@@ -80,7 +80,7 @@ const Home = () => {
         </thead>
         <tbody>
           {data.map(player => <tr>
-            <td>{player.username}</td>
+            <td><a href={`https://popflash.site/user/{player.user_id}`}>{player.username}</a></td>
             <td>{player.SR}</td>
             <td>{player.matches_played}</td>
           </tr>)}
