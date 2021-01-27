@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 import Table from 'react-bootstrap/Table';
 
-
 export const PageWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  padding-top: 100px;
+  padding-bottom: 200px;
+  width: 70%;
+  margin: auto;
 `;
 
 export const Leaderboard = styled(Table)`
-  width: 70%;
-  margin-top: 200px;
-  margin-bottom: 200px;
 
 `;

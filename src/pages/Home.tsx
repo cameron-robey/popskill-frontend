@@ -1,5 +1,7 @@
 // Modules
 import React, { useState, useEffect } from 'react';
+
+
 // Contexts
 
 // Components
@@ -37,16 +39,20 @@ const Home = () => {
 
   return <>
     <styles.PageWrapper>
+      <h1>CUDGS CS:GO Leaderboard</h1>
+      <p>WIP</p>
       <styles.Leaderboard striped bordered hover>
         <thead className="thead-dark">
           <tr>
+            <td>Rank</td>
             <td>Name</td>
             <td>ELO</td>
             <td>Matches Played</td>
           </tr>
         </thead>
         <tbody>
-          {data.map(player => <tr>
+          {data.map((player, index) => <tr>
+            <td>{index + 1}</td>
             <td><a href={`https://popflash.site/user/${player.user_id}`}>{player.username}</a></td>
             <td>{player.SR}</td>
             <td>{player.matches_played}</td>
