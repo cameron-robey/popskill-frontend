@@ -32,14 +32,14 @@ const Home = () => {
 
   return <>
     <styles.PageWrapper>
-      <h1>CUDGS CS:GO Leaderboard</h1>
-      <p>Play three 10-mans to get a rank on the leaderboard. Everyone starts with 1000 ELO. Your rating is based on round performance + individual performance in games.</p>
+      <h1>CUDGS CS:GO Skill Ratings</h1>
+      <p>Play three 10-mans to get a skill rating. Everyone starts with 1000 Rating, and it is updated after every match. Your Rating is based on round performance + individual performance in games.</p>
       <styles.Leaderboard striped bordered hover>
         <thead className="thead-dark">
           <tr>
             <td>Rank</td>
             <td>Name</td>
-            <td>ELO</td>
+            <td>Rating</td>
             <td>Matches Played</td>
           </tr>
         </thead>
