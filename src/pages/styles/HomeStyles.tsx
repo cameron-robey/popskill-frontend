@@ -25,3 +25,13 @@ export const DiffChange = styled.span`
     color: #212529;
   }
 `;
+
+export const PopflashLink = styled.a`
+  float: right;
+  img {
+    height: 1rem;
+  }
+
+  
+`;
+

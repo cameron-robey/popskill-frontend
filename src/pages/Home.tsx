@@ -1,6 +1,6 @@
 // Modules
 import React, { useState, useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
 
 // Contexts
 
@@ -8,6 +8,9 @@ import React, { useState, useEffect } from 'react';
 
 // Styles
 import * as styles from './styles/HomeStyles';
+
+// Assets
+import flashbang from './../assets/flash.png';
 
 interface Data {
   username: string,
@@ -55,7 +58,12 @@ const Home = () => {
         <tbody>
           {data.map((player, index) => <tr>
             <td>{index + 1}</td>
-            <td><a href={`https://popflash.site/user/${player.user_id}`}>{player.username}</a></td>
+            <td>
+              <Link to={`/player/${player.user_id}`}>{player.username}</Link>
+              <styles.PopflashLink href={`https://popflash.site/user/${player.user_id}`}>
+                <img src={flashbang} />
+              </styles.PopflashLink>
+            </td>
             <td>{`${player.SR}`}
               <styles.DiffChange className={Math.sign(player.last_diff) === 1 ? 'text-success' : Math.sign(player.last_diff) === -1 ? 'text-danger' : ''}>
                 {`${(player.last_diff<0?"":"+") + player.last_diff}`}

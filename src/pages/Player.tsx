@@ -43,6 +43,8 @@ const Player = () => {
       <h1>CUDGS CS:GO Leaderboard</h1>
       <p>{playerID}</p>
 
+      <p>cool graphs and stats will go here</p>
+
     </styles.PageWrapper>
   </>
 }
