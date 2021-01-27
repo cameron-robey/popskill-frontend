@@ -20,7 +20,7 @@ const Home = () => {
   const [data, setData] = useState<Data[]>([]);
 
   const getData = async () => {
-    const resp = await fetch('http://vm.mxbi.net:7355/rankings');
+    const resp = await fetch('https://vm.mxbi.net:7355/rankings');
     const json = await resp.json();
     
     const filtered = json.filter((i: Data)=>i.matches_played > 2);
