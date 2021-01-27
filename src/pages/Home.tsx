@@ -1,6 +1,5 @@
 // Modules
 import React, { useState, useEffect } from 'react';
-
 // Contexts
 
 // Components
@@ -71,8 +70,8 @@ const Home = () => {
 
   return <>
     <styles.PageWrapper>
-      <styles.Leaderboard>
-        <thead>
+      <styles.Leaderboard striped bordered hover>
+        <thead className="thead-dark">
           <tr>
             <td>Name</td>
             <td>ELO</td>
