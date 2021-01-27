@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Contexts
+import { useData } from './../contexts/DataContext';
 
 // Components
 
@@ -10,37 +11,24 @@ import { Link } from 'react-router-dom';
 import * as styles from './styles/HomeStyles';
 
 // Assets
-import flashbang from './../assets/flash.png';
-
-interface Data {
-  username: string,
-  SR: number,
-  SRvar: number,
-  matches_played: number,
-  user_id: string,
-  user_skill_history: number[],
-  last_diff: number
-}
+import flashbang from './../assets/flash.png'
 
 const Home = () => {
+  const { data, getData } = useData();
 
-  const [data, setData] = useState<Data[]>([]);
-
-  const getData = async () => {
-    const resp = await fetch('https://vm.mxbi.net:7355/rankings');
-    const json = await resp.json();
-    
-    const filtered = json.filter((i: Data)=>i.matches_played > 2);
-    
-    const sorted = filtered.sort((a: Data,b: Data) => b.SR - a.SR )
-
-    setData(sorted);
-  }
+  const [displayData, setDisplayData] = useState<Data[]>([]);
 
   useEffect(() => {
     // Get data on page load
     getData();
   }, []);
+
+  useEffect(() => {
+    const filtered = data.filter((i: Data)=>i.matches_played > 2);
+    const sorted = filtered.sort((a: Data,b: Data) => b.SR - a.SR );
+
+    setDisplayData(sorted);
+  }, [data]);
 
   return <>
     <styles.PageWrapper>
@@ -56,7 +44,7 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((player, index) => <tr>
+          {displayData.map((player, index) => <tr>
             <td>{index + 1}</td>
             <td>
               <Link to={`/player/${player.user_id}`}>{player.username}</Link>

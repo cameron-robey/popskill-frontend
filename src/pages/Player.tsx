@@ -1,13 +1,14 @@
 // Modules
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 // Contexts
+import { useData } from '../contexts/DataContext';
 
 // Components
 
 // Styles
 import * as styles from './styles/HomeStyles';
-import { useParams } from 'react-router-dom';
 
 interface Data {
   username: string,
@@ -23,25 +24,25 @@ interface Params {
 
 const Player = () => {
   const { playerID } = useParams<Params>();
-
-  const [data, setData] = useState<Data[]>([]);
-
-  const getData = async () => {
-    const resp = await fetch(`https://vm.mxbi.net:7355/user/${playerID}`);
-    const json = await resp.json();
-    
-    setData(json);
-  }
+  const { data, getData } = useData();
+  
+  const [displayData, setDisplayData] = useState<Data|undefined>({} as Data);
 
   useEffect(() => {
     // Get data on page load
     getData();
   }, []);
 
+  useEffect(() => {
+    const player = data.find((i:Data) => i.user_id === playerID);
+    console.log(player);
+    setDisplayData(player);
+  }, [data]);
+
   return <>
     <styles.PageWrapper>
       <h1>CUDGS CS:GO Leaderboard</h1>
-      <p>{playerID}</p>
+      <p>{displayData ? displayData.username : "Player not found"}</p>
 
       <p>cool graphs and stats will go here</p>
 

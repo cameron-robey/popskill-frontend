@@ -1,24 +1,29 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-// Import Pages
+// Pages
 import Home from './pages/Home';
 import Player from './pages/Player';
+
+// Contexts
+import { DataProvider } from './contexts/DataContext';
 
 // Styles
 import { GlobalStyle } from './theme/GlobalStyle';
 
 const App = () => {
   return <>
-    <GlobalStyle />
-    <Router>
-      <Route exact path="/">
-        <Home />
-      </Route>
-      <Route exact path="/player/:playerID">
-        <Player />
-      </Route>
-    </Router>
+    <DataProvider>
+      <GlobalStyle />
+      <Router>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route exact path="/player/:playerID">
+          <Player />
+        </Route>
+      </Router>
+    </DataProvider>
   </>
 }
 
