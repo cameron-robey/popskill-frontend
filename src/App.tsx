@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 // Import Pages
 import Home from './pages/Home';
+import Player from './pages/Player';
 
 // Styles
 import { GlobalStyle } from './theme/GlobalStyle';
@@ -13,6 +14,9 @@ const App = () => {
     <Router>
       <Route exact path="/">
         <Home />
+      </Route>
+      <Route exact path="/user/:id">
+        <Player />
       </Route>
     </Router>
   </>

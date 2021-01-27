@@ -14,7 +14,9 @@ interface Data {
   SR: number,
   SRvar: number,
   matches_played: number,
-  user_id: string
+  user_id: string,
+  user_skill_history: number[],
+  last_diff: number
 }
 
 const Home = () => {
@@ -54,7 +56,11 @@ const Home = () => {
           {data.map((player, index) => <tr>
             <td>{index + 1}</td>
             <td><a href={`https://popflash.site/user/${player.user_id}`}>{player.username}</a></td>
-            <td>{player.SR}</td>
+            <td>{`${player.SR}`}
+              <styles.DiffChange className={Math.sign(player.last_diff) === 1 ? 'text-success' : Math.sign(player.last_diff) === -1 ? 'text-danger' : ''}>
+                {`${(player.last_diff<0?"":"+") + player.last_diff}`}
+              </styles.DiffChange>
+            </td>
             <td>{player.matches_played}</td>
           </tr>)}
         </tbody>

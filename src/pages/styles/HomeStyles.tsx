@@ -11,3 +11,17 @@ export const PageWrapper = styled.div`
 export const Leaderboard = styled(Table)`
 
 `;
+
+
+
+export const DiffChange = styled.span`
+  float: right;
+  &::before {
+    content: '(';
+    color: #212529;
+  }
+  &::after {
+    content: ')';
+    color: #212529;
+  }
+`;
