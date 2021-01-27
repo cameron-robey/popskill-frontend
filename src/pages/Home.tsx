@@ -33,39 +33,6 @@ const Home = () => {
   useEffect(() => {
     // Get data on page load
     getData();
-    
-    // setData([
-    //   {
-    //     username: "Player 1",
-    //     SR: 987,
-    //     SRvar: 100,
-    //     matches_played: 5
-    //   },
-    //   {
-    //     username: "Player 2",
-    //     SR: 1003,
-    //     SRvar: 100,
-    //     matches_played: 6
-    //   },
-    //   {
-    //     username: "Player 3",
-    //     SR: 821,
-    //     SRvar: 100,
-    //     matches_played: 5
-    //   },
-    //   {
-    //     username: "Player 4",
-    //     SR: 1203,
-    //     SRvar: 100,
-    //     matches_played: 9
-    //   },
-    //   {
-    //     username: "Player 1",
-    //     SR: 1203,
-    //     SRvar: 100,
-    //     matches_played: 1
-    //   },
-    // ])
   }, []);
 
   return <>
