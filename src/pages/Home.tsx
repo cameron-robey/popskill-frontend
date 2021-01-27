@@ -12,7 +12,8 @@ interface Data {
   username: string,
   SR: number,
   SRvar: number,
-  matches_played: number
+  matches_played: number,
+  user_id: string
 }
 
 const Home = () => {
