@@ -33,7 +33,7 @@ const Home = () => {
   return <>
     <styles.PageWrapper>
       <h1>CUDGS CS:GO Leaderboard</h1>
-      <p>WIP</p>
+      <p>Play three 10-mans to get a rank on the leaderboard. Everyone starts with 1000 ELO. Your rating is based on round performance + individual performance in games.</p>
       <styles.Leaderboard striped bordered hover>
         <thead className="thead-dark">
           <tr>
@@ -61,6 +61,7 @@ const Home = () => {
           </tr>)}
         </tbody>
       </styles.Leaderboard>
+      <p>Made by Mikel and Cameron.</p>
     </styles.PageWrapper>
   </>
 }
