@@ -6,31 +6,21 @@ import styled from 'styled-components';
 interface GraphData {
   data: {
     id: string,
-    color: string,
     data: {
-      x: number,
+      x: string,
       y: number
     }[]
-  }
+  }[]
 }
 
 const GraphWrapper = styled.div`
   height: 500px;
 `;
 
-const PlayerByGame: React.FC<GraphData> = ({ data }) => {
+const PlayersByDate: React.FC<GraphData> = ({ data }) => {
 
-  const getYMaxMin = (data: {x:number, y:number}[]) => {
-    const ticks = getYAxisTicks(data);
-
-    return {
-      max: Math.max(...ticks),
-      min: Math.min(...ticks)
-    }
-  }
-
-  const getXMaxMin = (data: {x:number, y:number}[]) => {
-    const ticks = getXAxisTicks(data);
+  const getYMaxMin = (data: {x:string, y:number}[]) => {
+    const ticks = getYTicks(data);
 
     return {
       max: Math.max(...ticks),
@@ -38,7 +28,7 @@ const PlayerByGame: React.FC<GraphData> = ({ data }) => {
     }
   }
 
-  const getYAxisTicks = (data: {x:number, y:number}[]) => {
+  const getYTicks = (data: {x:string, y:number}[]) => {
     let max = Math.round(Math.max(...data.map(i=>i.y)) / 200) + 1;
     let min = Math.round(Math.min(...data.map(i=>i.y)) / 200) - 1;
 
@@ -47,23 +37,38 @@ const PlayerByGame: React.FC<GraphData> = ({ data }) => {
     return Array.from({length: length}, (_, i) => (i + min) * 200);
   }
 
-  const getXAxisTicks = (data: {x:number, y:number}[]) => {
-    return Array.from({length: Math.round((data.length + 1) / 2)}, (_, i) => i * 2);
+  const getYAxisTicks = () => {
+    let gmax = -1;
+    let gmin = -1;
+
+    data.forEach((g,i) => {
+      const {max, min} = getYMaxMin(g.data);
+      if (max > gmax) gmax = max;
+      if (min < gmin || gmin === -1) gmin = min;
+    });
+    console.log(gmax, gmin)
+    let length = ((gmax - gmin) / 200) + 1;
+    console.log(data);
+    return Array.from({length: length}, (_, i) => (i*200 + gmin));
   }
+
+  useEffect(() => {
+  }, []);
 
   return <>
     <GraphWrapper>
   
       <ResponsiveLine
-          data={[data]}
+          data={data}
           margin={{ top: 50, right: 160, bottom: 50, left: 60 }}
-          xScale={{ type: 'linear', ...getXMaxMin(data.data)}}
-          yScale={{ type: 'linear', stacked: true, ...getYMaxMin(data.data)}}
+          xScale={{ format: "%Y-%m-%d", type: "time" }}
+          yScale={{ type: 'linear', stacked: false, max: Math.max(...getYAxisTicks()), min: Math.min(...getYAxisTicks())}}
+          xFormat="time:%Y-%m-%d"
           yFormat=" >-.2f"
           curve="monotoneX"
           axisTop={null}
           axisRight={{
-            tickValues: getYAxisTicks(data.data),
+            tickValues: getYAxisTicks(),
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
@@ -71,16 +76,13 @@ const PlayerByGame: React.FC<GraphData> = ({ data }) => {
             legendOffset: 0
           }}
           axisBottom={{
-            tickValues: getXAxisTicks(data.data),
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
+            format: "%Y-%m-%d",
             legend: 'Games',
             legendOffset: 36,
             legendPosition: 'middle'
           }}
           axisLeft={{
-            tickValues: getYAxisTicks(data.data),
+            tickValues: getYAxisTicks(),
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
@@ -96,8 +98,7 @@ const PlayerByGame: React.FC<GraphData> = ({ data }) => {
           pointBorderColor={{ from: 'serieColor' }}
           pointLabelYOffset={-12}
           useMesh={true}
-          gridXValues={getXAxisTicks(data.data)}
-          gridYValues={getYAxisTicks(data.data)}
+          gridYValues={getYAxisTicks()}
           legends={[
               {
                   anchor: 'right',
@@ -129,4 +130,4 @@ const PlayerByGame: React.FC<GraphData> = ({ data }) => {
   </>
 }
 
-export default PlayerByGame;
+export default PlayersByDate;

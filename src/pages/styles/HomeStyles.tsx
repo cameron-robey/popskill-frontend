@@ -7,6 +7,10 @@ export const PageWrapper = styled.div`
   padding-bottom: 200px;
   width: 70%;
   margin: auto;
+
+  p {
+    margin: 0;
+  }
 `;
 
 export const Leaderboard = styled(Table)`
