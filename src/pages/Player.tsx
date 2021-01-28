@@ -34,44 +34,12 @@ const Player = () => {
     const sorted = filtered.sort((a: Data,b: Data) => b.SR - a.SR );
 
     setFilteredData(sorted);
-  }, [data]);
 
-  useEffect(() => {
-    const player = data.filter((i:Data) => i.user_id === playerID);
+    const player = sorted.filter((i:Data) => i.user_id === playerID);
     if (player.length > 0) {
       setDisplayData(player[0]);
     }
   }, [data]);
-
-  useEffect(() => {
-    if (Object.keys(displayData).length > 0) {
-      console.log([{
-        id: displayData.username,
-        data: displayData.user_skill_history.slice(1).map((game, index) => {
-          return {
-            x: game.date.substr(0,10),
-            y: game.SR
-          }
-        }).filter((g,i,s)=>{
-          if (i + 1 === s.length) return true;
-          if (g.x === s[i+1].x) return false;
-          return true;
-        })
-      },{
-        id: data[15].username,
-        data: data[15].user_skill_history.slice(1).map((game, index) => {
-          return {
-            x: game.date.substr(0,10),
-            y: game.SR
-          }
-        }).filter((g,i,s)=>{
-          if (i + 1 === s.length) return true;
-          if (g.x === s[i+1].x) return false;
-          return true;
-        })
-      }])
-    }
-  }, [displayData]);
 
   if (Object.keys(displayData).length === 0) {
     // Loading
