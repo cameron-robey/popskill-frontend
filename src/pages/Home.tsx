@@ -49,9 +49,13 @@ const Home = () => {
       headers: headers,
       body: urlencoded
     });
+    
+    const json = await response.json();
 
-    console.log(response);
-  setShow(false);
+    alert(`Error: ${json}`)
+
+
+    setShow(false);
   }
 
   return <>
