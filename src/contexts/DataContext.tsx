@@ -17,7 +17,7 @@ export const DataProvider: React.FC = ({ children }) => {
   const getData = async (force = false) => {
     // Only update if object empty or forced refresh
     if (data.length === 0 || force ) {
-      const resp = await fetch('http://localhost:5000/rankings');
+      const resp = await fetch('https://vm.mxbi.net:7355/rankings');
       const json = await resp.json();
       setData(json);
     }
