@@ -38,31 +38,31 @@ const Home = () => {
     setDisplayData(sorted);
   }, [data]);
 
-  const submitMatch = async () => {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/x-www-form-urlencoded");
-    let urlencoded = new URLSearchParams();
-    urlencoded.append("match_url", "https://popflash.site/match/1148142");
+  // const submitMatch = async () => {
+  //   let headers = new Headers();
+  //   headers.append("Content-Type", "application/x-www-form-urlencoded");
+  //   let urlencoded = new URLSearchParams();
+  //   urlencoded.append("match_url", "https://popflash.site/match/1148142");
 
-    const response = await fetch('https://vm.mxbi.net:7355/submit_match', {
-      method: 'post',
-      headers: headers,
-      body: urlencoded
-    });
+  //   const response = await fetch('https://vm.mxbi.net:7355/submit_match', {
+  //     method: 'post',
+  //     headers: headers,
+  //     body: urlencoded
+  //   });
     
-    const json = await response.json();
+  //   const json = await response.json();
 
-    alert(`Error: ${json}`)
+  //   alert(`Error: ${json}`)
 
 
-    setShow(false);
-  }
+  //   setShow(false);
+  // }
 
   return <>
     <styles.PageWrapper>
       <h1>CUDGS CS:GO Skill Ratings</h1>
       <p>Play three 10-mans to get a skill rating. Everyone starts with 1000 Rating, and it is updated after every match. Your Rating is based on round performance + individual performance in games.</p>
-      <styles.AddButton onClick={handleShow}>Add match</styles.AddButton>
+      {/* <styles.AddButton onClick={handleShow}>Add match</styles.AddButton>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -81,7 +81,7 @@ const Home = () => {
             Add Match
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
 
       <styles.Leaderboard striped bordered hover>
         <thead className="thead-dark">
