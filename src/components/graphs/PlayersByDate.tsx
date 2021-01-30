@@ -10,14 +10,19 @@ interface GraphData {
       x: string,
       y: number
     }[]
-  }[]
+  }[],
+  height?: string
 }
 
-const GraphWrapper = styled.div`
-  height: 500px;
+interface GraphWrapperProps {
+  height?: string
+}
+
+const GraphWrapper = styled.div<GraphWrapperProps>`
+  height: ${props => props.height || '500px'};
 `;
 
-const PlayersByDate: React.FC<GraphData> = ({ data }) => {
+const PlayersByDate: React.FC<GraphData> = ({ data, height }) => {
 
   const getYMaxMin = (data: {x:string, y:number}[]) => {
     const ticks = getYTicks(data);
@@ -56,7 +61,7 @@ const PlayersByDate: React.FC<GraphData> = ({ data }) => {
   }, []);
 
   return <>
-    <GraphWrapper>
+    <GraphWrapper height={height}>
   
       <ResponsiveLine
           data={data}
@@ -90,7 +95,7 @@ const PlayersByDate: React.FC<GraphData> = ({ data }) => {
             legendOffset: -40,
             legendPosition: 'middle'
           }}
-          colors={{ scheme: 'spectral' }}
+          colors={{ scheme: 'category10' }}
           lineWidth={1}
           pointSize={4}
           pointColor={{ theme: 'background' }}

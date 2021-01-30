@@ -52,7 +52,7 @@ const Compare = () => {
 
       <p><b>Rating by date</b></p>
 
-      <PlayersByDate data={displayData.map(p => ({
+      <PlayersByDate height="800px" data={displayData.map(p => ({
           id: p.username,
           data: p.user_skill_history.slice(1).map((game, index) => {
             return {

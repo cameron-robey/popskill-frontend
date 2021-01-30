@@ -1,6 +1,6 @@
 // Modules
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
@@ -17,11 +17,15 @@ import flashbang from './../assets/flash.png'
 
 const Home = () => {
   const { data, getData } = useData();
+  const { push } = useHistory();
 
   const [displayData, setDisplayData] = useState<Data[]>([]);
   const [show, setShow] = useState(false);
 
   const [input, setInput] = useState('');
+
+  const [compareShow, setCompareShow] = useState(false);
+  const [compareList, setCompareList] = useState<boolean[]>([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -36,6 +40,7 @@ const Home = () => {
     const sorted = filtered.sort((a: Data,b: Data) => b.SR - a.SR );
 
     setDisplayData(sorted);
+    setCompareList(new Array(sorted.length).fill(false));
   }, [data]);
 
   // const submitMatch = async () => {
@@ -58,10 +63,28 @@ const Home = () => {
   //   setShow(false);
   // }
 
+  const countNumTrue = (arr: boolean[]) => arr.filter(i=>i).length;
+
+  useEffect(() => {
+    setCompareList(new Array(displayData.length).fill(false));
+  }, [compareShow]);
+
+  const redirectToPage = () => {
+    push(`/compare/${compareList.map((u,i)=>u ? displayData[i].user_id:false).filter(a=>a).join(',')}`);
+  }
+
   return <>
     <styles.PageWrapper>
       <h1>CUDGS CS:GO Skill Ratings</h1>
       <p>Play three 10-mans to get a skill rating. Everyone starts with 1000 Rating, and it is updated after every match. Your Rating is based on round performance + individual performance in games.</p>
+      <div>
+      {!compareShow ? 
+      <styles.Button onClick={() => setCompareShow(true)}>Compare players</styles.Button> : <>
+      <styles.Button variant="secondary" onClick={() => setCompareShow(false)}>Cancel</styles.Button>
+      <styles.Button disabled={(() => countNumTrue(compareList) < 2)()} onClick={redirectToPage}>Compare</styles.Button>
+      </> }
+      </div>
+      
       {/* <styles.AddButton onClick={handleShow}>Add match</styles.AddButton>
 
       <Modal show={show} onHide={handleClose}>
@@ -86,7 +109,7 @@ const Home = () => {
       <styles.Leaderboard striped bordered hover>
         <thead className="thead-dark">
           <tr>
-            <td>Rank</td>
+            <td>{compareShow ? 'Rank' : 'Rank'}</td>
             <td>Name</td>
             <td>Rating</td>
             <td>Matches Played</td>
@@ -94,7 +117,7 @@ const Home = () => {
         </thead>
         <tbody>
           {displayData.map((player, index) => <tr>
-            <td>{index + 1}</td>
+            <td>{compareShow ? <><input type="checkbox" checked={compareList[index]} onChange={() => {let a = [...compareList]; a[index] = !compareList[index]; setCompareList(a)}} /></>  : <>{index + 1}</>}</td>
             <td>
               <Link to={`/player/${player.user_id}`}>{player.username}</Link>
               <styles.PopflashLink href={`https://popflash.site/user/${player.user_id}`}>

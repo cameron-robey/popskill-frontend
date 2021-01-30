@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
+import BootstrapButton from 'react-bootstrap/Button';
 
 export const PageWrapper = styled.div`
   padding-top: 100px;
   padding-bottom: 200px;
   width: 70%;
+  max-width: 80rem;
   margin: auto;
 
   p {
@@ -40,6 +41,11 @@ export const PopflashLink = styled.a`
   
 `;
 
-export const AddButton = styled(Button)`
-  margin-bottom: 20px;
+export const Button = styled(BootstrapButton)`
+  margin: 20px 0;
+  margin-left: 20px;
+
+  &:first-child {
+    margin-left: 0px;
+  }
 `;
