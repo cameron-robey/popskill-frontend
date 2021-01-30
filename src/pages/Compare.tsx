@@ -47,7 +47,7 @@ const Compare = () => {
   return <>
     <styles.PageWrapper>
       <h1>CUDGS CS:GO Leaderboard</h1>
-
+      <p>Player data for: <b>{ displayData.map(i=>i.username).join(', ') }</b></p>
       <hr />
 
       <p><b>Rating by date</b></p>

@@ -82,7 +82,7 @@ const PlayersByDate: React.FC<GraphData> = ({ data, height }) => {
           }}
           axisBottom={{
             format: "%Y-%m-%d",
-            legend: 'Games',
+            legend: 'Date',
             legendOffset: 36,
             legendPosition: 'middle'
           }}
