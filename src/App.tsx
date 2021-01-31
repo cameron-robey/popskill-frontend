@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Home from './pages/Home';
 import Player from './pages/Player';
 import Compare from './pages/Compare';
+import Veto from './pages/Veto';
 
 // Contexts
 import { DataProvider } from './contexts/DataContext';
@@ -27,6 +28,10 @@ const App = () => {
 
         <Route exact path="/compare/:playerIDs">
           <Compare />
+        </Route>
+
+        <Route exact path="/veto">
+          <Veto />
         </Route>
       </Router>
     </DataProvider>
