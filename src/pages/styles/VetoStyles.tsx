@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const PageWrapper = styled.div`
-  padding-top: 170px;
+  padding-top: 100px;
   padding-bottom: 200px;
   width: 70%;
   max-width: 80rem;
@@ -16,7 +16,7 @@ export const WelcomeWrapper = styled.div`
 `;
 
 export const SectionTitle = styled.h1`
-  font-weight: 700;
+
 `;
 
 export const WelcomeSubtitle = styled.p`

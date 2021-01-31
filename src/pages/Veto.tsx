@@ -158,7 +158,7 @@ const Compare = () => {
               // Input team names
               return <>
                 <styles.WelcomeWrapper>
-                  <styles.SectionTitle>CUDGS CS:GO Wingman Tournament Veto</styles.SectionTitle>
+                  <styles.SectionTitle><b>CUDGS CS:GO Wingman Tournament Veto</b></styles.SectionTitle>
                   <styles.WelcomeSubtitle>Please use this tool to go through the vetos for your matches. One player should stream this and input all the choices from the teams.</styles.WelcomeSubtitle>
                   <styles.InputTitles>Please enter the team names:</styles.InputTitles>
                   <styles.NameInputWrapper>Team 1<styles.NameInput value={teamNames.team1} onChange={(e: React.ChangeEvent<HTMLInputElement>)=>handleNameChange(e,1)} /></styles.NameInputWrapper>
@@ -170,56 +170,56 @@ const Compare = () => {
             case 1:
               // Team 1 ban
               return <>
-                <styles.SectionTitle>Team {teamNames.team1} Veto</styles.SectionTitle>
+                <styles.SectionTitle>Team <b>{teamNames.team1}</b> Veto</styles.SectionTitle>
                 <Maps maps={availableMaps} callback={handleMapSelection} selector='team1ban1' />
               </>
             
             case 2:
               // Team 2 ban
               return <>
-                <styles.SectionTitle>Team {teamNames.team2} Veto</styles.SectionTitle>
+                <styles.SectionTitle>Team <b>{teamNames.team2}</b> Veto</styles.SectionTitle>
                 <Maps maps={availableMaps} callback={handleMapSelection} selector='team2ban1' />
               </>
             
             case 3:
               // Team 1 pick
               return <>
-                <styles.SectionTitle>Team {teamNames.team1} Pick</styles.SectionTitle>
+                <styles.SectionTitle>Team <b>{teamNames.team1}</b> Pick</styles.SectionTitle>
                 <Maps maps={availableMaps} callback={handleMapSelection} selector='team1pick' />
               </>
             
             case 4:
               // Team 2 pick sides
               return <>
-                <styles.SectionTitle>Team {teamNames.team2} Pick Side</styles.SectionTitle>
+                <styles.SectionTitle>Team <b>{teamNames.team2}</b> Pick Side</styles.SectionTitle>
                 <Sides callback={handleSidePick} selector='team2pickside' />
               </>
             
             case 5:
               // Team 2 pick
               return <>
-                <styles.SectionTitle>Team {teamNames.team2} Pick</styles.SectionTitle>
+                <styles.SectionTitle>Team <b>{teamNames.team2}</b> Pick</styles.SectionTitle>
                 <Maps maps={availableMaps} callback={handleMapSelection} selector='team2pick' />
               </>
             
             case 6:
               // Team 1 pick sides
               return <>
-                <styles.SectionTitle>Team {teamNames.team1} Pick Sides</styles.SectionTitle>
+                <styles.SectionTitle>Team <b>{teamNames.team1}</b> Pick Sides</styles.SectionTitle>
                 <Sides callback={handleSidePick} selector='team1pickside' />
               </>
             
             case 7:
               // Team 1 ban
               return <>
-                <styles.SectionTitle>Team {teamNames.team1} Ban</styles.SectionTitle>
+                <styles.SectionTitle>Team <b>{teamNames.team1}</b> Ban</styles.SectionTitle>
                 <Maps maps={availableMaps} callback={handleMapSelection} selector='team1ban2' />
               </>
             
             case 8:
               // Team 2 ban
               return <>
-                <styles.SectionTitle>Team {teamNames.team2} Ban</styles.SectionTitle>
+                <styles.SectionTitle>Team <b>{teamNames.team2}</b> Ban</styles.SectionTitle>
                 <Maps maps={availableMaps} callback={handleMapSelection} selector='team2ban2' />
               </>
           
@@ -228,7 +228,7 @@ const Compare = () => {
               // Show final maps
               console.log(pickbanData);
               return <>
-                <styles.SectionTitle>Veto Result</styles.SectionTitle>
+                <styles.SectionTitle><b>Veto Result</b></styles.SectionTitle>
                 <FinalMaps
                   map1={{
                     name: pickbanData.team1pick,
