@@ -76,7 +76,7 @@ const Home = () => {
   return <>
     <styles.PageWrapper>
       <h1>CUDGS CS:GO Skill Ratings</h1>
-      <p>Play three 10-mans to get a skill rating. Everyone starts with 1000 Rating, and it is updated after every match. Your Rating is based on round performance + individual performance in games.</p>
+      <p>Play <b>six</b> 10-mans to get a skill rating. Everyone starts with 1000 Rating, and it is updated after every match. Your Rating is based on <b>game</b> performance + individual performance in games.</p>
       <div>
       {!compareShow ? 
       <styles.Button onClick={() => setCompareShow(true)}>Compare players</styles.Button> : <>
@@ -134,6 +134,7 @@ const Home = () => {
         </tbody>
       </styles.Leaderboard>
       <p>Made by Mikel and Cameron.</p>
+      <p>Rating v2: mu=1000 sigma=166 beta=166 tau=3.32 hltv=0.75 mode=GAME</p>
     </styles.PageWrapper>
   </>
 }
