@@ -111,9 +111,11 @@ const Home = () => {
           <tr>
             <td>{compareShow ? 'Rank' : 'Rank'}</td>
             <td>Name</td>
-            <td>Rating</td>
+            <td><b>Rating</b></td>
             <td>Matches Played</td>
-          </tr>
+            <td>RW%</td>
+            <td>HTLV</td>
+          </tr>whoo
         </thead>
         <tbody>
           {displayData.map((player, index) => <tr>
@@ -124,12 +126,14 @@ const Home = () => {
                 <img src={flashbang} />
               </styles.PopflashLink>
             </td>
-            <td>{`${player.SR}`}
+            <td><b>{`${player.SR}`}</b>
               <styles.DiffChange className={Math.sign(player.last_diff) === 1 ? 'text-success' : Math.sign(player.last_diff) === -1 ? 'text-danger' : ''}>
                 {`${(player.last_diff<0?"":"+") + player.last_diff}`}
               </styles.DiffChange>
             </td>
             <td>{player.matches_played}</td>
+            <td>{Math.floor(player.rwp*100) + "%"}</td>
+            <td>{player.hltv.toFixed(2)}</td>
           </tr>)}
         </tbody>
       </styles.Leaderboard>
