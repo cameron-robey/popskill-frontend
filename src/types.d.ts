@@ -9,5 +9,7 @@ type Data = {
     date: string,
     SR: number
   }[],
-  last_diff: number
+  last_diff: number,
+  rwp: number,
+  hltv: number
 }
