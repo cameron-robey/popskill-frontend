@@ -115,7 +115,7 @@ const Home = () => {
             <td>Matches Played</td>
             <td>RW%</td>
             <td>HTLV</td>
-          </tr>whoo
+          </tr>
         </thead>
         <tbody>
           {displayData.map((player, index) => <tr>
