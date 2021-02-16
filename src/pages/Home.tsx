@@ -114,7 +114,7 @@ const Home = () => {
             <td><b>Rating</b></td>
             <td>Matches Played</td>
             <td>RW%</td>
-            <td>HTLV</td>
+            <td>HLTV</td>
           </tr>
         </thead>
         <tbody>
