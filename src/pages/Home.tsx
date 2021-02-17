@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 // Contexts
-import { useData } from './../contexts/DataContext';
+import { useData } from '../contexts/DataContext';
 
 // Components
 
@@ -16,10 +16,10 @@ import * as styles from './styles/HomeStyles';
 import flashbang from './../assets/flash.png'
 
 const Home = () => {
-  const { data, getData } = useData();
+  const { rankings, getRankings } = useData();
   const { push } = useHistory();
 
-  const [displayData, setDisplayData] = useState<Data[]>([]);
+  const [displayData, setDisplayData] = useState<User[]>([]);
   const [show, setShow] = useState(false);
 
   const [input, setInput] = useState('');
@@ -32,16 +32,16 @@ const Home = () => {
 
   useEffect(() => {
     // Get data on page load
-    getData();
+    getRankings();
   }, []);
 
   useEffect(() => {
-    const filtered = data.filter((i: Data)=>i.matches_played > 2);
-    const sorted = filtered.sort((a: Data,b: Data) => b.SR - a.SR );
+    const filtered = rankings.filter((i: User)=>i.matches_played > 2);
+    const sorted = filtered.sort((a: User,b: User) => b.SR - a.SR );
 
     setDisplayData(sorted);
     setCompareList(new Array(sorted.length).fill(false));
-  }, [data]);
+  }, [rankings]);
 
   // const submitMatch = async () => {
   //   let headers = new Headers();

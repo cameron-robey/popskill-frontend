@@ -17,23 +17,23 @@ interface Params {
 
 const Compare = () => {
   const { playerIDs } = useParams<Params>();
-  const { data, getData } = useData();
+  const { rankings, getRankings } = useData();
   
-  const [displayData, setDisplayData] = useState<Data[]>([]);
+  const [displayData, setDisplayData] = useState<User[]>([]);
 
   useEffect(() => {
     // Get data on page load
-    getData();
+    getRankings();
   }, []);
 
   useEffect(() => {
-    const filtered = data.filter((i: Data)=>i.matches_played > 2);
-    const sorted = filtered.sort((a: Data,b: Data) => b.SR - a.SR );
+    const filtered = rankings.filter((i: User)=>i.matches_played > 2);
+    const sorted = filtered.sort((a: User,b: User) => b.SR - a.SR );
 
     const ids = playerIDs.split(',');
-    const display = sorted.filter((i:Data) => ids.includes(i.user_id));
+    const display = sorted.filter((i:User) => ids.includes(i.user_id));
     setDisplayData(display);
-  }, [data]);
+  }, [rankings]);
 
   if (Object.keys(displayData).length === 0) {
     // Loading

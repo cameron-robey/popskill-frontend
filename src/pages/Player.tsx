@@ -18,28 +18,28 @@ interface Params {
 
 const Player = () => {
   const { playerID } = useParams<Params>();
-  const { data, getData } = useData();
+  const { rankings, getRankings } = useData();
   
-  const [displayData, setDisplayData] = useState<Data>({} as Data);
+  const [displayData, setDisplayData] = useState<User>({} as User);
 
-  const [filteredData, setFilteredData] = useState<Data[]>([]);
+  const [filteredData, setFilteredData] = useState<User[]>([]);
 
   useEffect(() => {
     // Get data on page load
-    getData();
+    getRankings();
   }, []);
 
   useEffect(() => {
-    const filtered = data.filter((i: Data)=>i.matches_played > 2);
-    const sorted = filtered.sort((a: Data,b: Data) => b.SR - a.SR );
+    const filtered = rankings.filter((i: User)=>i.matches_played > 2);
+    const sorted = filtered.sort((a: User,b: User) => b.SR - a.SR );
 
     setFilteredData(sorted);
 
-    const player = sorted.filter((i:Data) => i.user_id === playerID);
+    const player = sorted.filter((i: User) => i.user_id === playerID);
     if (player.length > 0) {
       setDisplayData(player[0]);
     }
-  }, [data]);
+  }, [rankings]);
 
   if (Object.keys(displayData).length === 0) {
     // Loading
