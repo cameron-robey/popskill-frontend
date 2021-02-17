@@ -114,8 +114,8 @@ const Home = () => {
             <td><b>Rating</b></td>
             <td>Matches Played</td>
             <td>RW%</td>
-            <td>HTLV</td>
-          </tr>whoo
+            <td>HLTV</td>
+          </tr>
         </thead>
         <tbody>
           {displayData.map((player, index) => <tr>
