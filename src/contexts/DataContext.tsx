@@ -28,10 +28,10 @@ export const DataProvider: React.FC = ({ children }) => {
   
   const getMatches = async (force = false) => {
     // Only update if object empty or forced refresh
-    if (rankings.length === 0 || force ) {
+    if (matches.length === 0 || force ) {
       const resp = await fetch('https://vm.mxbi.net:7355/matches');
       const json = await resp.json();
-      setRankings(json);
+      setMatches(json);
     }
   }
 

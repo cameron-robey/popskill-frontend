@@ -19,14 +19,17 @@ interface Params {
 const Player = () => {
   const { playerID } = useParams<Params>();
   const { rankings, getRankings } = useData();
+  const { matches, getMatches } = useData();
   
   const [displayData, setDisplayData] = useState<User>({} as User);
+  const [displayMatches, setDisplayMatches] = useState<Match[]>([]);
 
   const [filteredData, setFilteredData] = useState<User[]>([]);
 
   useEffect(() => {
     // Get data on page load
     getRankings();
+    getMatches();
   }, []);
 
   useEffect(() => {
@@ -40,6 +43,10 @@ const Player = () => {
       setDisplayData(player[0]);
     }
   }, [rankings]);
+
+  useEffect(() => {
+    setDisplayMatches(matches);
+  }, [matches]);
 
   if (Object.keys(displayData).length === 0) {
     // Loading
@@ -63,9 +70,13 @@ const Player = () => {
         id: displayData.username,
         color: "hsl(337, 70%, 50%)",
         data: displayData.user_skill_history.map((game, index) => {
+
           return {
             x: index,
-            y: game.SR
+            y: game.SR,
+            matchID: game.match_id,
+            matchDetails: displayMatches.find(i=>i.match_id === game.match_id),
+            userID: displayData.user_id
           }
         })
       }} />
@@ -77,7 +88,7 @@ const Player = () => {
         data: displayData.user_skill_history.slice(1).map((game, index) => {
           return {
             x: game.date.substr(0,10),
-            y: game.SR
+            y: game.SR,
           }
         }).filter((g,i,s)=>{
           if (i + 1 === s.length) return true;

@@ -9,13 +9,39 @@ interface GraphData {
     color: string,
     data: {
       x: number,
-      y: number
+      y: number,
+      matchID: string
     }[]
   }
 }
 
 const GraphWrapper = styled.div`
   height: 500px;
+`;
+
+const ToolTip = styled.div`
+  background: white none repeat scroll 0% 0%;
+  color: inherit;
+  font-size: inherit;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 2px;
+  padding: 5px 9px;
+`;
+
+const ToolTipWrapper = styled.div`
+  white-space: pre;
+  display: flex;
+  align-items: left;
+  flex-direction: column;
+  /* justify-content: left; */
+`;
+
+const ColorBlock = styled.span<{color: string}>`
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: ${({color}) => color} none repeat scroll 0% 0%;
+  margin-right: 7px;
 `;
 
 const PlayerByGame: React.FC<GraphData> = ({ data }) => {
@@ -124,9 +150,87 @@ const PlayerByGame: React.FC<GraphData> = ({ data }) => {
                   ]
               }
           ]}
+
+          tooltip={(input: any) => {
+            const data = input.point as {
+              borderColor: string,
+              color: string,
+              data: {
+                matchID: number,
+                matchDetails: Match,
+                userID: string,
+                x: number,
+                xFormatted: number,
+                y: number,
+                yFormatted: string,
+                yStacked: number
+              },
+              id: string,
+              index: number,
+              serieColor: string,
+              serieId: string
+            }
+
+            // Tooltip for first game
+
+            if (data.data.matchID === 0) {
+              return <>
+              <ToolTip>
+                <ToolTipWrapper>
+                  <span><ColorBlock color={input.point.borderColor} /><strong>Initial rating: </strong>{data.data.y}</span>
+                </ToolTipWrapper>
+              </ToolTip>
+            </>
+            }
+
+            // Show loading if loading data
+
+            if (data.data.matchDetails === undefined) {
+              return <>
+                <ToolTip>
+                  <ToolTipWrapper>
+                    <span><ColorBlock color={input.point.borderColor} /><strong>Match ID: </strong>{data.data.matchID}</span>
+                    <span><strong>Loading match data</strong></span>
+                  </ToolTipWrapper>
+                </ToolTip>
+              </>
+            }
+
+            // Work out whether winning team or not
+            let friendlyScore, friendly, enemyScore, enemy;
+            if (data.data.userID in data.data.matchDetails.team1table) {
+              // Part of team 1
+              friendlyScore = data.data.matchDetails.team1score;
+              friendly = data.data.matchDetails.team1table;
+              enemyScore = data.data.matchDetails.team2score;
+              enemy = data.data.matchDetails.team2table;
+            } else {
+              // assume part of team 2
+              friendlyScore = data.data.matchDetails.team2score;
+              friendly = data.data.matchDetails.team2table;
+              enemyScore = data.data.matchDetails.team1score;
+              enemy = data.data.matchDetails.team1table;
+            }
+
+            return <>
+              <ToolTip>
+                <ToolTipWrapper>
+                  <span><ColorBlock color={input.point.borderColor} /><strong>Match ID: </strong>{data.data.matchID}</span>
+                  <span>
+                    {(friendlyScore > enemyScore ? "Won" : friendlyScore < enemyScore ? "Lost" : "Tie")}:
+                    <strong> {friendlyScore} - {enemyScore}</strong>
+                  </span>
+                </ToolTipWrapper>
+              </ToolTip>
+            </>
+          }
+        }
       />
     </GraphWrapper> 
   </>
 }
 
 export default PlayerByGame;
+
+    
+    
