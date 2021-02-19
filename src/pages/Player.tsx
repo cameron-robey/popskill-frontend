@@ -6,6 +6,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 
 // Components
+import PageTitle from './../components/helpers/PageTitle';
 import PlayerByGame from './../components/graphs/PlayerByGame';
 import PlayersByDate from './../components/graphs/PlayersByDate';
 
@@ -165,6 +166,8 @@ const Player = () => {
   }
 
   return <>
+    <PageTitle title={displayData.username} />
+
     <styles.PageWrapper>
       <h1>
         <Link to={'/'}>

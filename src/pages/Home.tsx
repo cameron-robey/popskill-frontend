@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import { useData } from '../contexts/DataContext';
 
 // Components
+import PageTitle from './../components/helpers/PageTitle';
 
 // Styles
 import * as styles from './styles/HomeStyles';
@@ -76,6 +77,8 @@ const Home = () => {
   }
 
   return <>
+    <PageTitle title={''} />
+
     <styles.PageWrapper>
       <h1>CUDGS CS:GO Skill Ratings</h1>
       <p>Play <b>six</b> 10-mans to get a skill rating. Everyone starts with 1000 Rating, and it is updated after every match. Your Rating is based on <b>game</b> performance + individual performance in games.</p>

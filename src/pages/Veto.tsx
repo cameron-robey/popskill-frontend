@@ -1,6 +1,9 @@
 // Modules
 import React, { useState, useEffect } from 'react';
 
+// Components
+import PageTitle from './../components/helpers/PageTitle';
+
 // Styles
 import * as styles from './styles/VetoStyles';
 
@@ -150,6 +153,8 @@ const Compare = () => {
 
 
   return <>
+    <PageTitle title={'Wingman Tournament Veto - CUDGS CS:GO'} hideSiteName={true} />
+
     <styles.PageWrapper>
       {
         (() => {
