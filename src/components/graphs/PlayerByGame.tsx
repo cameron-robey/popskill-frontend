@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 interface GraphData {
   data: {
@@ -45,6 +46,7 @@ const ColorBlock = styled.span<{color: string}>`
 `;
 
 const PlayerByGame: React.FC<GraphData> = ({ data }) => {
+  const { push } = useHistory();
 
   const getYMaxMin = (data: {x:number, y:number}[]) => {
     const ticks = getYAxisTicks(data);
@@ -150,6 +152,8 @@ const PlayerByGame: React.FC<GraphData> = ({ data }) => {
                   ]
               }
           ]}
+
+          // onClick={(point: any) => {push(`/match/${point.data.matchID}`)}}
 
           tooltip={(input: any) => {
             const data = input.point as {

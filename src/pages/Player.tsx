@@ -16,6 +16,29 @@ interface Params {
   playerID: string
 }
 
+interface UserParsedStats {
+  played: number,
+  won: number,
+  tie: number,
+  loss: number,
+  averages: {
+    kill: number,
+    assist: number,
+    death: number,
+    adr: number,
+    hltv: number
+  },
+  maps: {
+    dust2: number,
+    inferno: number,
+    mirage: number,
+    nuke: number,
+    overpass: number,
+    train: number,
+    vertigo: number
+  }
+}
+
 const Player = () => {
   const { playerID } = useParams<Params>();
   const { rankings, getRankings } = useData();
@@ -26,6 +49,8 @@ const Player = () => {
 
   const [filteredData, setFilteredData] = useState<User[]>([]);
 
+  const [stats, setStats] = useState({} as UserParsedStats);
+
   useEffect(() => {
     // Get data on page load
     getRankings();
@@ -33,6 +58,20 @@ const Player = () => {
   }, []);
 
   useEffect(() => {
+    updateUser();
+  }, [rankings]);
+
+  useEffect(() => {
+    setDisplayMatches(matches);
+    updateUser();
+  }, [matches]);
+
+  useEffect(() => {
+    // When id changes
+    updateUser();
+  }, [playerID]);
+
+  const updateUser = () => {
     const filtered = rankings.filter((i: User)=>i.matches_played > 2);
     const sorted = filtered.sort((a: User,b: User) => b.SR - a.SR );
 
@@ -40,13 +79,72 @@ const Player = () => {
 
     const player = sorted.filter((i: User) => i.user_id === playerID);
     if (player.length > 0) {
-      setDisplayData(player[0]);
-    }
-  }, [rankings]);
+      const p = player[0];
+      setDisplayData(p);
 
-  useEffect(() => {
-    setDisplayMatches(matches);
-  }, [matches]);
+      const matchesPlayedIn = matches.filter((i) => p.user_skill_history.map(i=>i.match_id).includes(i.match_id));
+      const matchesWonArr = [];
+      const matchesLostArr = [];
+      const matchesTiedArr = [];
+      let ktotal = 0;
+      let atotal = 0;
+      let dtotal = 0;
+      let hltvtotal = 0;
+      let adrtotal = 0;
+      const maps = {
+        dust2: 0,
+        inferno: 0,
+        mirage: 0,
+        nuke: 0,
+        overpass: 0,
+        train: 0,
+        vertigo: 0
+      }
+      
+      matchesPlayedIn.forEach(i=>{
+        // Find whether in team 1 or 2
+        let team: 1|2 = 2;
+        if (Object.keys(i.team1table).includes(p.user_id)) team = 1;
+        let teamkey: "team1table"|"team2table";
+        teamkey = (team === 1) ? "team1table" : "team2table";
+
+        // Win vs lose
+        if ((team === 1 && i.team1score > i.team2score) || 
+        (team === 2 && i.team2score > i.team1score)) matchesWonArr.push(i);
+        else if (i.team1score === i.team2score) matchesTiedArr.push(i);
+        else matchesLostArr.push(i);
+
+        // Averages
+        ktotal += i[teamkey][p.user_id].K;
+        atotal += i[teamkey][p.user_id].A;
+        dtotal += i[teamkey][p.user_id].D;
+        hltvtotal += i[teamkey][p.user_id].HLTV;
+        adrtotal += i[teamkey][p.user_id].ADR;
+
+        // Maps
+        if (i.map !== undefined) maps[i.map] = maps[i.map] + 1;
+      });
+
+      const newStats: UserParsedStats = {
+        played: matchesPlayedIn.length,
+        won: matchesWonArr.length,
+        tie: matchesTiedArr.length,
+        loss: matchesLostArr.length,
+        averages: {
+          kill: ktotal / matchesPlayedIn.length,
+          assist: atotal / matchesPlayedIn.length,
+          death: dtotal / matchesPlayedIn.length,
+          adr: adrtotal / matchesPlayedIn.length,
+          hltv: hltvtotal / matchesPlayedIn.length
+        },
+        maps: maps
+      }
+
+      setStats(newStats);
+      console.log(newStats);
+    }
+  }
+
 
   if (Object.keys(displayData).length === 0) {
     // Loading
@@ -64,6 +162,31 @@ const Player = () => {
       <p>Current rating: <b>{ displayData.SR }</b> | Current rank: <b>{ filteredData.indexOf(displayData) + 1 }</b></p>
 
       <hr />
+
+      <p><b>Player stats (average per game)</b></p>
+      <styles.InlineWrapper>
+        <styles.StatsTable bordered>
+          <thead className="thead-dark">
+            <tr>
+              <td>Kills</td>
+              <td>Deaths</td>
+              <td>Assists</td>
+              <td>HLTV Rating</td>
+              <td>ADR</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{stats.averages?.kill.toFixed(2)}</td>
+              <td>{stats.averages?.death.toFixed(2)}</td>
+              <td>{stats.averages?.assist.toFixed(2)}</td>
+              <td>{stats.averages?.hltv.toFixed(2)}</td>
+              <td>{stats.averages?.adr.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </styles.StatsTable>
+      </styles.InlineWrapper>
+
       <p><b>Rating by game</b></p>
 
       <PlayerByGame data={{

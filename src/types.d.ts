@@ -1,4 +1,6 @@
-type User = {
+type valueof<T> = T[keyof T]
+
+interface User {
   username: string,
   SR: number,
   SRvar: number,
@@ -19,7 +21,7 @@ interface UserStats {
   K: number,
   A: number,
   D: number,
-  "Unnamed: 4": number,
+  'Unnamed: 4': number,
   ADR: number,
   HLTV: number,
   HS: number,
@@ -30,7 +32,7 @@ interface UserStats {
   id: string
 }
 
-type Match = {
+interface Match {
  team1score: number,
  team2score: number,
  team1table: {
@@ -41,5 +43,19 @@ type Match = {
  },
  date: string,
  match_id: string,
+ map: "dust2" | "inferno" | "mirage" | "nuke" | "overpass" | "train" | "vertigo" | undefined
  map_image: string
+}
+
+interface APIMatch extends Omit<Match, "map"|"team1table"|"team2table"> {
+  team1table: {
+    [key: string]: APIUserStats
+  },
+  team2table: {
+    [key: string]: APIUserStats
+  },
+}
+
+interface APIUserStats extends Omit<UserStats,"FA"> {
+  "Unnamed: 4": number
 }

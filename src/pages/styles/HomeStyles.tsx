@@ -14,11 +14,17 @@ export const PageWrapper = styled.div`
   }
 `;
 
+export const InlineWrapper = styled.div`
+  display: inline-block;
+`;
+
 export const Leaderboard = styled(Table)`
 
 `;
 
+export const StatsTable = styled(Table)`
 
+`;
 
 export const DiffChange = styled.span`
   float: right;
