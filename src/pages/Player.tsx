@@ -146,7 +146,7 @@ const Player = () => {
   }
 
 
-  if (Object.keys(displayData).length === 0) {
+  if (Object.keys(displayData).length === 0 || matches.length === 0) {
     // Loading
     return <>
       <styles.PageWrapper>
@@ -163,29 +163,87 @@ const Player = () => {
 
       <hr />
 
-      <p><b>Player stats (average per game)</b></p>
-      <styles.InlineWrapper>
-        <styles.StatsTable bordered>
-          <thead className="thead-dark">
-            <tr>
-              <td>Kills</td>
-              <td>Deaths</td>
-              <td>Assists</td>
-              <td>HLTV Rating</td>
-              <td>ADR</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{stats.averages?.kill.toFixed(2)}</td>
-              <td>{stats.averages?.death.toFixed(2)}</td>
-              <td>{stats.averages?.assist.toFixed(2)}</td>
-              <td>{stats.averages?.hltv.toFixed(2)}</td>
-              <td>{stats.averages?.adr.toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </styles.StatsTable>
-      </styles.InlineWrapper>
+      <styles.Row>
+        <p><b>Player stats (average per game)</b></p>
+
+        <styles.InlineWrapper>
+          <styles.StatsTable bordered>
+            <thead className="thead-dark">
+              <tr>
+                <td>Kills</td>
+                <td>Deaths</td>
+                <td>Assists</td>
+                <td>HLTV Rating</td>
+                <td>ADR</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{stats.averages?.kill.toFixed(2)}</td>
+                <td>{stats.averages?.death.toFixed(2)}</td>
+                <td>{stats.averages?.assist.toFixed(2)}</td>
+                <td>{stats.averages?.hltv.toFixed(2)}</td>
+                <td>{stats.averages?.adr.toFixed(2)}</td>
+              </tr>
+            </tbody>
+          </styles.StatsTable>
+        </styles.InlineWrapper>
+
+      </styles.Row>
+      
+      <styles.Row>
+        <styles.InlineWrapper>
+          <p><b>Map stats</b></p>
+
+          <styles.StatsTable bordered>
+            <thead className="thead-dark">
+              <tr>
+                <td>Won</td>
+                <td>Tied</td>
+                <td>Lost</td>
+                </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{stats.won}</td>
+                <td>{stats.tie}</td>
+                <td>{stats.loss}</td>
+              </tr>
+            </tbody>
+          </styles.StatsTable>
+        </styles.InlineWrapper>
+
+        <styles.InlineBreak />
+        
+        <styles.InlineWrapper>
+          <p><b>Matches played by map</b></p>
+
+          <styles.StatsTable bordered>
+            <thead className="thead-dark">
+              <tr>
+                <td>Dust 2</td>
+                <td>Inferno</td>
+                <td>Mirage</td>
+                <td>Nuke</td>
+                <td>Overpass</td>
+                <td>Train</td>
+                <td>Vertigo</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{stats.maps.dust2}</td>
+                <td>{stats.maps.inferno}</td>
+                <td>{stats.maps.mirage}</td>
+                <td>{stats.maps.nuke}</td>
+                <td>{stats.maps.overpass}</td>
+                <td>{stats.maps.train}</td>
+                <td>{stats.maps.vertigo}</td>
+              </tr>
+            </tbody>
+          </styles.StatsTable>
+        </styles.InlineWrapper>
+      </styles.Row>
 
       <p><b>Rating by game</b></p>
 

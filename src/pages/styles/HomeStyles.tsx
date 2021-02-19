@@ -14,8 +14,17 @@ export const PageWrapper = styled.div`
   }
 `;
 
+export const Row = styled.div`
+  display: block;
+`;
+
 export const InlineWrapper = styled.div`
   display: inline-block;
+`;
+
+export const InlineBreak = styled.div`
+  display: inline-block;
+  width: 20px;
 `;
 
 export const Leaderboard = styled(Table)`
