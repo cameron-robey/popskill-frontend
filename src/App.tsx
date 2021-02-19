@@ -18,21 +18,25 @@ const App = () => {
     <DataProvider>
       <GlobalStyle />
       <Router>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        
-        <Route exact path="/player/:playerID">
-          <Player />
-        </Route>
+        <Route path="/" render={() => { window.scroll({top: 0, left: 0}); return null; }} />
 
-        <Route exact path="/compare/:playerIDs">
-          <Compare />
-        </Route>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          
+          <Route exact path="/player/:playerID">
+            <Player />
+          </Route>
 
-        <Route exact path="/veto">
-          <Veto />
-        </Route>
+          <Route exact path="/compare/:playerIDs">
+            <Compare />
+          </Route>
+
+          <Route exact path="/veto">
+            <Veto />
+          </Route>
+        </Switch>
       </Router>
     </DataProvider>
   </>
