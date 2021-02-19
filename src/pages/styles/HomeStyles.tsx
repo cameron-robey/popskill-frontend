@@ -12,6 +12,24 @@ export const PageWrapper = styled.div`
   p {
     margin: 0;
   }
+
+  h1 {
+    a {
+      color: #000;
+      text-decoration: none;
+    }
+    svg {
+      height: 1.7rem;
+      margin-right: 10px;
+      /* vertical-align: middle; */
+    }
+  }
+`;
+
+export const VerticalAlignWrapper = styled.span`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const Row = styled.div`

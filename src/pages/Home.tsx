@@ -17,6 +17,7 @@ import flashbang from './../assets/flash.png'
 
 const Home = () => {
   const { rankings, getRankings } = useData();
+  const { getMatches } = useData();
   const { push } = useHistory();
 
   const [displayData, setDisplayData] = useState<User[]>([]);
@@ -33,6 +34,7 @@ const Home = () => {
   useEffect(() => {
     // Get data on page load
     getRankings();
+    getMatches();
   }, []);
 
   useEffect(() => {
