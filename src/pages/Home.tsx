@@ -181,10 +181,10 @@ const Home = () => {
           </tr>)}
         </tbody>
       </styles.Leaderboard>
-      </styles.PageWrapper>
 
       <p>Made by Mikel and Cameron.</p>
       <p>Rating v2: mu=1000 sigma=166 beta=166 tau=3.32 hltv=0.75 mode=GAME</p>
+      </styles.PageWrapper>
   </>
 }
 export default Home;
