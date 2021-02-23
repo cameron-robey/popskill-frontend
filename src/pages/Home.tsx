@@ -39,7 +39,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = rankings.filter((i: User)=>i.matches_played > 2);
+    const filtered = rankings; //rankings.filter((i: User)=>i.matches_played > 2);
     const sorted = filtered.sort((a: User,b: User) => b.SR - a.SR );
 
     setDisplayData(sorted);
@@ -75,6 +75,9 @@ const Home = () => {
   const redirectToPage = () => {
     push(`/compare/${compareList.map((u,i)=>u ? displayData[i].user_id:false).filter(a=>a).join(',')}`);
   }
+
+  const rankedFilter = (player: User, index: number) => player.matches_played >= 10 && (Date.now() - new Date(player.user_skill_history.map(i => i.date).sort().reverse()[0]).getTime())/86400000 <= 14;
+  const unrankedFilter = (player: User, index: number) => !rankedFilter(player, index);
 
   return <>
     <PageTitle title={''} />
@@ -123,7 +126,8 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {displayData.map((player, index) => <tr>
+          {displayData.filter(rankedFilter)
+          .map((player, index) => <tr>
             <td>{compareShow ? <><input type="checkbox" checked={compareList[index]} onChange={() => {let a = [...compareList]; a[index] = !compareList[index]; setCompareList(a)}} /></>  : <>{index + 1}</>}</td>
             <td>
               <Link to={`/player/${player.user_id}`}>{player.username}</Link>
@@ -142,9 +146,45 @@ const Home = () => {
           </tr>)}
         </tbody>
       </styles.Leaderboard>
+      
+      <br></br>
+      <h2>Unranked players</h2>
+      <styles.Leaderboard striped bordered hover>
+        <thead className="thead-dark">
+          <tr>
+            <td>{compareShow ? 'Rank' : 'Rank'}</td>
+            <td>Name</td>
+            <td><b>Rating</b></td>
+            <td>Matches Played</td>
+            <td>RW%</td>
+            <td>HLTV</td>
+          </tr>
+        </thead>
+        <tbody>
+          {displayData.filter(unrankedFilter).sort((a, b) => a.username < b.username ? 1 : -1)
+          .map((player, index) => <tr>
+            <td>{compareShow ? <><input type="checkbox" checked={compareList[index]} onChange={() => {let a = [...compareList]; a[index] = !compareList[index]; setCompareList(a)}} /></>  : <>?</>}</td>
+            <td>
+              <Link to={`/player/${player.user_id}`}>{player.username}</Link>
+              <styles.PopflashLink href={`https://popflash.site/user/${player.user_id}`}>
+                <img src={flashbang} />
+              </styles.PopflashLink>
+            </td>
+            <td><b>{`${player.SR}`}?</b>
+              <styles.DiffChange className={Math.sign(player.last_diff) === 1 ? 'text-success' : Math.sign(player.last_diff) === -1 ? 'text-danger' : ''}>
+                {`${(player.last_diff<0?"":"+") + player.last_diff}`}
+              </styles.DiffChange>
+            </td>
+            <td>{player.matches_played}</td>
+            <td>{Math.floor(player.rwp*100) + "%"}</td>
+            <td>{player.hltv.toFixed(2)}</td>
+          </tr>)}
+        </tbody>
+      </styles.Leaderboard>
+      </styles.PageWrapper>
+
       <p>Made by Mikel and Cameron.</p>
       <p>Rating v2: mu=1000 sigma=166 beta=166 tau=3.32 hltv=0.75 mode=GAME</p>
-    </styles.PageWrapper>
   </>
 }
 export default Home;
