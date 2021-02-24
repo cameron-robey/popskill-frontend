@@ -13,6 +13,9 @@ import PlayersByDate from './../components/graphs/PlayersByDate';
 // Styles
 import * as styles from './styles/HomeStyles';
 
+// Helpers
+import { rankedFilter } from './../helpers/data';
+
 interface Params {
   playerID: string
 }
@@ -73,8 +76,7 @@ const Player = () => {
   }, [playerID]);
 
   const updateUser = () => {
-    const filtered = rankings.filter((i: User)=>i.matches_played > 2);
-    const sorted = filtered.sort((a: User,b: User) => b.SR - a.SR );
+    const sorted = rankings.sort((a: User,b: User) => b.SR - a.SR );
 
     setFilteredData(sorted);
 
@@ -146,6 +148,14 @@ const Player = () => {
     }
   }
 
+  const getRank = () => {
+    // Check if user should have rank
+    if (rankedFilter(displayData)) {
+      // Work out rank
+      return rankings.filter(rankedFilter).indexOf(displayData) + 1;
+    } else return '? - Play more games to get ranked'
+  }
+
 
   if (Object.keys(displayData).length === 0 || matches.length === 0) {
     // Loading
@@ -180,7 +190,7 @@ const Player = () => {
         </Link>
       </h1>
       <h4>Player data for: <b>{ displayData.username }</b></h4>
-      <p>Current rating: <b>{ displayData.SR }</b> | Current rank: <b>{ filteredData.indexOf(displayData) + 1 }</b></p>
+      <p>Current rating: <b>{ displayData.SR }</b> | Current rank: <b>{ getRank() }</b></p>
 
       <hr />
 

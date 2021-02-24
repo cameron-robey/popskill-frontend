@@ -1,3 +1,5 @@
+declare module 'num-words';
+
 type valueof<T> = T[keyof T]
 
 interface User {

@@ -1,8 +1,7 @@
 // Modules
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import InWords from 'num-words';
 
 // Contexts
 import { useData } from '../contexts/DataContext';
@@ -15,6 +14,12 @@ import * as styles from './styles/HomeStyles';
 
 // Assets
 import flashbang from './../assets/flash.png'
+
+// Config
+import { config } from './../config';
+
+// Helpers
+import { rankedFilter, unrankedFilter } from './../helpers/data';
 
 const Home = () => {
   const { rankings, getRankings } = useData();
@@ -46,26 +51,6 @@ const Home = () => {
     setCompareList(new Array(sorted.length).fill(false));
   }, [rankings]);
 
-  // const submitMatch = async () => {
-  //   let headers = new Headers();
-  //   headers.append("Content-Type", "application/x-www-form-urlencoded");
-  //   let urlencoded = new URLSearchParams();
-  //   urlencoded.append("match_url", "https://popflash.site/match/1148142");
-
-  //   const response = await fetch('https://vm.mxbi.net:7355/submit_match', {
-  //     method: 'post',
-  //     headers: headers,
-  //     body: urlencoded
-  //   });
-    
-  //   const json = await response.json();
-
-  //   alert(`Error: ${json}`)
-
-
-  //   setShow(false);
-  // }
-
   const countNumTrue = (arr: boolean[]) => arr.filter(i=>i).length;
 
   useEffect(() => {
@@ -76,15 +61,12 @@ const Home = () => {
     push(`/compare/${compareList.map((u,i)=>u ? displayData[i].user_id:false).filter(a=>a).join(',')}`);
   }
 
-  const rankedFilter = (player: User, index: number) => player.matches_played >= 10 && (Date.now() - new Date(player.user_skill_history.map(i => i.date).sort().reverse()[0]).getTime())/86400000 <= 14;
-  const unrankedFilter = (player: User, index: number) => !rankedFilter(player, index);
-
   return <>
     <PageTitle title={''} />
 
     <styles.PageWrapper>
       <h1>CUDGS CS:GO Skill Ratings</h1>
-      <p>Play <b>six</b> 10-mans to get a skill rating. Everyone starts with 1000 Rating, and it is updated after every match. Your Rating is based on <b>game</b> performance + individual performance in games.</p>
+      <p>Play <b>{InWords(config.ranking_conditions.matches)}</b> 10-mans to get a skill rating. Everyone starts with 1000 Rating, and it is updated after every match. Your Rating is based on <b>game</b> performance + individual performance in games.</p>
       <div>
       {!compareShow ? 
       <styles.Button onClick={() => setCompareShow(true)}>Compare players</styles.Button> : <>
@@ -93,26 +75,6 @@ const Home = () => {
       </> }
       </div>
       
-      {/* <styles.AddButton onClick={handleShow}>Add match</styles.AddButton>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add match</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <input className="input" value={input} onChange={(e) => setInput(e.target.value)}></input>
-          </form>
-       </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="success" onClick={submitMatch}>
-            Add Match
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
 
       <styles.Leaderboard striped bordered hover>
         <thead className="thead-dark">
@@ -128,7 +90,7 @@ const Home = () => {
         <tbody>
           {displayData.filter(rankedFilter)
           .map((player, index) => <tr>
-            <td>{compareShow ? <><input type="checkbox" checked={compareList[index]} onChange={() => {let a = [...compareList]; a[index] = !compareList[index]; setCompareList(a)}} /></>  : <>{index + 1}</>}</td>
+            <td>{compareShow ? <><input type="checkbox" checked={compareList[displayData.indexOf(player)]} onChange={() => {let a = [...compareList]; a[displayData.indexOf(player)] = !compareList[displayData.indexOf(player)]; setCompareList(a)}} /></>  : <>{index + 1}</>}</td>
             <td>
               <Link to={`/player/${player.user_id}`}>{player.username}</Link>
               <styles.PopflashLink href={`https://popflash.site/user/${player.user_id}`}>
@@ -147,8 +109,10 @@ const Home = () => {
         </tbody>
       </styles.Leaderboard>
       
-      <br></br>
+      <br />
       <h2>Unranked players</h2>
+      <p>Players who have not played <strong>{InWords(config.ranking_conditions.matches)}</strong> games, or who have not played in <strong>{config.ranking_conditions.days} days</strong> are not shown on the main leaderboard.</p>
+      <br />
       <styles.Leaderboard striped bordered hover>
         <thead className="thead-dark">
           <tr>
@@ -163,7 +127,7 @@ const Home = () => {
         <tbody>
           {displayData.filter(unrankedFilter).sort((a, b) => a.username < b.username ? 1 : -1)
           .map((player, index) => <tr>
-            <td>{compareShow ? <><input type="checkbox" checked={compareList[index]} onChange={() => {let a = [...compareList]; a[index] = !compareList[index]; setCompareList(a)}} /></>  : <>?</>}</td>
+            <td>{compareShow ? <><input type="checkbox" checked={compareList[displayData.indexOf(player)]} onChange={() => {let a = [...compareList]; a[displayData.indexOf(player)] = !compareList[displayData.indexOf(player)]; setCompareList(a)}} /></>  : <>?</>}</td>
             <td>
               <Link to={`/player/${player.user_id}`}>{player.username}</Link>
               <styles.PopflashLink href={`https://popflash.site/user/${player.user_id}`}>
@@ -182,8 +146,14 @@ const Home = () => {
         </tbody>
       </styles.Leaderboard>
 
-      <p>Made by Mikel and Cameron.</p>
-      <p>Rating v2: mu=1000 sigma=166 beta=166 tau=3.32 hltv=0.75 mode=GAME</p>
+      <p>{`Made by ${config.contributors.slice(0, -1).join(',')} and ${config.contributors.slice(-1)}.`}</p>
+      <p>{`Rating v${config.rating_version}: 
+        mu=${config.trueskill_parameters.mu} 
+        sigma=${config.trueskill_parameters.sigma} 
+        beta=${config.trueskill_parameters.beta} 
+        tau=${config.trueskill_parameters.tau} 
+        hltv=${config.trueskill_parameters.hltv} 
+        mode=${config.trueskill_parameters.mode}`}</p>
       </styles.PageWrapper>
   </>
 }
