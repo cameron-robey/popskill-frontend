@@ -1,4 +1,5 @@
 export const config = {
+  api_url: "https://vm.mxbi.net:7355",
   contributors: [
     "Mikel",
     "Cameron"
@@ -15,5 +16,6 @@ export const config = {
     tau: 3.32,
     hltv: 0.75,
     mode: "GAME"
-  }
+  },
+  "name": "CUDGS CS:GO Skill Ratings"
 }

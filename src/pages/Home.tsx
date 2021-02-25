@@ -65,7 +65,7 @@ const Home = () => {
     <PageTitle title={''} />
 
     <styles.PageWrapper>
-      <h1>CUDGS CS:GO Skill Ratings</h1>
+      <h1>{config.name}</h1>
       <p>Play <b>{InWords(config.ranking_conditions.matches)}</b> 10-mans to get a skill rating. Everyone starts with 1000 Rating, and it is updated after every match. Your Rating is based on <b>game</b> performance + individual performance in games.</p>
       <div>
       {!compareShow ? 
@@ -76,8 +76,8 @@ const Home = () => {
       </div>
       
 
-      <styles.Leaderboard striped bordered hover>
-        <thead className="thead-dark">
+      <styles.Leaderboard>
+        <thead>
           <tr>
             <td>{compareShow ? 'Rank' : 'Rank'}</td>
             <td>Name</td>
@@ -98,7 +98,7 @@ const Home = () => {
               </styles.PopflashLink>
             </td>
             <td><b>{`${player.SR}`}</b>
-              <styles.DiffChange className={Math.sign(player.last_diff) === 1 ? 'text-success' : Math.sign(player.last_diff) === -1 ? 'text-danger' : ''}>
+              <styles.DiffChange change={Math.sign(player.last_diff)}>
                 {`${(player.last_diff<0?"":"+") + player.last_diff}`}
               </styles.DiffChange>
             </td>
@@ -113,8 +113,8 @@ const Home = () => {
       <h2>Unranked players</h2>
       <p>Players who have not played <strong>{InWords(config.ranking_conditions.matches)}</strong> games, or who have not played in <strong>{config.ranking_conditions.days} days</strong> are not shown on the main leaderboard.</p>
       <br />
-      <styles.Leaderboard striped bordered hover>
-        <thead className="thead-dark">
+      <styles.Leaderboard>
+        <thead>
           <tr>
             <td>{compareShow ? 'Rank' : 'Rank'}</td>
             <td>Name</td>
@@ -135,7 +135,7 @@ const Home = () => {
               </styles.PopflashLink>
             </td>
             <td><b>{`${player.SR}`}?</b>
-              <styles.DiffChange className={Math.sign(player.last_diff) === 1 ? 'text-success' : Math.sign(player.last_diff) === -1 ? 'text-danger' : ''}>
+              <styles.DiffChange change={Math.sign(player.last_diff)}>
                 {`${(player.last_diff<0?"":"+") + player.last_diff}`}
               </styles.DiffChange>
             </td>
@@ -145,6 +145,8 @@ const Home = () => {
           </tr>)}
         </tbody>
       </styles.Leaderboard>
+
+      <br />
 
       <p>{`Made by ${config.contributors.slice(0, -1).join(',')} and ${config.contributors.slice(-1)}.`}</p>
       <p>{`Rating v${config.rating_version}: 

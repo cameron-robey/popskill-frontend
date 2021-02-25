@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import { ThemeProvider } from 'styled-components';
+import { Theme } from './theme/Theme';
 
 // Pages
 import Home from './pages/Home';
@@ -15,30 +17,32 @@ import { GlobalStyle } from './theme/GlobalStyle';
 
 const App = () => {
   return <>
-    <DataProvider>
-      <GlobalStyle />
-      <Router>
-        <Route path="/" render={() => { window.scroll({top: 0, left: 0}); return null; }} />
+    <ThemeProvider theme={Theme}>
+      <DataProvider>
+        <GlobalStyle />
+        <Router>
+          <Route path="/" render={() => { window.scroll({top: 0, left: 0}); return null; }} />
 
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          
-          <Route exact path="/player/:playerID">
-            <Player />
-          </Route>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            
+            <Route exact path="/player/:playerID">
+              <Player />
+            </Route>
 
-          <Route exact path="/compare/:playerIDs">
-            <Compare />
-          </Route>
+            <Route exact path="/compare/:playerIDs">
+              <Compare />
+            </Route>
 
-          <Route exact path="/veto">
-            <Veto />
-          </Route>
-        </Switch>
-      </Router>
-    </DataProvider>
+            <Route exact path="/veto">
+              <Veto />
+            </Route>
+          </Switch>
+        </Router>
+      </DataProvider>
+    </ThemeProvider>
   </>
 }
 

@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 
+// Config
+import { config } from './../config';
+
 interface DataContext {
   rankings: User[],
   getRankings: () => void
@@ -30,7 +33,7 @@ export const DataProvider: React.FC = ({ children }) => {
   const getRankings = async (force = false) => {
     // Only update if object empty or forced refresh
     if (rankings.length === 0 || force ) {
-      const resp = await fetch('https://vm.mxbi.net:7355/rankings');
+      const resp = await fetch(`${config.api_url}/rankings`);
       const json = await resp.json();
       setRankings(json);
     }
@@ -39,7 +42,7 @@ export const DataProvider: React.FC = ({ children }) => {
   const getMatches = async (force = false) => {
     // Only update if object empty or forced refresh
     if (matches.length === 0 || force ) {
-      const resp = await fetch('https://vm.mxbi.net:7355/matches');
+      const resp = await fetch(`${config.api_url}/matches`);
       const json = await resp.json();
 
       // Replace keys with more friendly ones
