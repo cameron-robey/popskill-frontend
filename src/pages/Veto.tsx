@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 // Components
-import PageTitle from './../components/helpers/PageTitle';
+import PageTitle from '../components/helpers/PageInfo';
 
 // Styles
 import * as styles from './styles/VetoStyles';
@@ -153,7 +153,7 @@ const Compare = () => {
 
 
   return <>
-    <PageTitle title={'Wingman Tournament Veto - CUDGS CS:GO'} hideSiteName={true} />
+    <PageTitle title={'Wingman Tournament Veto - CUDGS CS:GO'} titleHideSiteName={true} />
 
     <styles.PageWrapper>
       {

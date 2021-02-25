@@ -6,7 +6,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 
 // Components
-import PageTitle from './../components/helpers/PageTitle';
+import PageTitle from '../components/helpers/PageInfo';
 import PlayersByDate from './../components/graphs/PlayersByDate';
 
 // Styles

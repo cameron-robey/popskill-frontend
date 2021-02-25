@@ -6,7 +6,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 
 // Components
-import PageTitle from './../components/helpers/PageTitle';
+import PageTitle from '../components/helpers/PageInfo';
 import PlayerByGame from './../components/graphs/PlayerByGame';
 import PlayersByDate from './../components/graphs/PlayersByDate';
 
@@ -177,7 +177,12 @@ const Player = () => {
   }
 
   return <>
-    <PageTitle title={displayData.username} />
+    <PageTitle 
+      title={displayData.username}
+      metaDescription={`Statistics for ${displayData.username}. Current rank: ${getRank()}. Average HLTV rating: ${stats.averages.hltv}. View page for more detailed statistics...`}
+      metaTitle={displayData.username}
+      metaSiteName={config.name}
+    />
 
     <styles.PageWrapper>
       <h1>

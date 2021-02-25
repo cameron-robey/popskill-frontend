@@ -7,7 +7,7 @@ import InWords from 'num-words';
 import { useData } from '../contexts/DataContext';
 
 // Components
-import PageTitle from './../components/helpers/PageTitle';
+import PageTitle from '../components/helpers/PageInfo';
 
 // Styles
 import * as styles from './styles/HomeStyles';
