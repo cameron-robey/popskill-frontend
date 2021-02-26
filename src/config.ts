@@ -1,5 +1,5 @@
 export const config = {
-  api_url: "https://vm.mxbi.net:7355",
+  api_url: "https://api.sandb.ga",
   contributors: [
     "Mikel",
     "Cameron"
