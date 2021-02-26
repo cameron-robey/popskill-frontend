@@ -15,7 +15,8 @@ interface User {
   }[],
   last_diff: number,
   rwp: number,
-  hltv: number
+  hltv: number,
+  adr: number
 }
 
 interface UserStats {

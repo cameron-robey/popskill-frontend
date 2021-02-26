@@ -84,6 +84,7 @@ const Home = () => {
             <td><b>Rating</b></td>
             <td>Matches Played</td>
             <td>RW%</td>
+            <td>ADR</td>
             <td>HLTV</td>
           </tr>
         </thead>
@@ -104,6 +105,7 @@ const Home = () => {
             </td>
             <td>{player.matches_played}</td>
             <td>{Math.floor(player.rwp*100) + "%"}</td>
+            <td>{Math.floor(player.adr)}</td>
             <td>{player.hltv.toFixed(2)}</td>
           </tr>)}
         </tbody>
@@ -121,6 +123,7 @@ const Home = () => {
             <td><b>Rating</b></td>
             <td>Matches Played</td>
             <td>RW%</td>
+            <td>ADR</td>
             <td>HLTV</td>
           </tr>
         </thead>
@@ -141,6 +144,7 @@ const Home = () => {
             </td>
             <td>{player.matches_played}</td>
             <td>{Math.floor(player.rwp*100) + "%"}</td>
+            <td>{Math.floor(player.adr)}</td>
             <td>{player.hltv.toFixed(2)}</td>
           </tr>)}
         </tbody>
