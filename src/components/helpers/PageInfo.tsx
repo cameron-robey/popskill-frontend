@@ -16,7 +16,7 @@ const PageTitle: React.FC<PageTitleProps> = ({title, titleHideSiteName = false, 
         <title>{`${title ? `${title}` : `` }`}</title> :
         <title>{`${title ? `${title} - ` : `` }CUDGS CS:GO Leaderboard`}</title>
       }
-      {
+      {/* {
         metaTitle ? <>
           <meta content={metaTitle} property="og:title" />
         </> : null
@@ -30,7 +30,7 @@ const PageTitle: React.FC<PageTitleProps> = ({title, titleHideSiteName = false, 
         metaSiteName ? <>
           <meta content={metaSiteName} property="og:site_name" />
         </> : null
-      }
+      } */}
     </Helmet>
   </>
 }
