@@ -17,5 +17,5 @@ export const config = {
     hltv: 0.75,
     mode: "GAME"
   },
-  "name": "CUDGS CS:GO Skill Ratings"
+  "name": "CUDGS CS:GO Skill Ratings | Season 0"
 }
