@@ -62,7 +62,7 @@ const Player = () => {
   useEffect(() => {
     // Get data on page load
     getUser(Number(playerID));
-    getLeaderboard();
+    getLeaderboard("0");
   }, []);
 
   useEffect(() => {
@@ -106,10 +106,8 @@ const Player = () => {
 
 
 
-    let matchesPlayedIn: Match[] = [];
+    let matchesPlayedIn: Match[] = user.seasons["0"];
 
-
-    Object.keys(user.seasons).forEach(i=> matchesPlayedIn = matchesPlayedIn.concat(user.seasons[i]));
     const matchesWonArr = [];
     const matchesLostArr = [];
     const matchesTiedArr = [];
@@ -310,7 +308,7 @@ const Player = () => {
       <PlayerByGame data={{
         id: user.username,
         color: "hsl(337, 70%, 50%)",
-        data: user.user_skill_history[Object.keys(user.user_skill_history).slice(-1)[0]].map((game, index) => {
+        data: user.user_skill_history["0"].map((game, index) => {
 
           return {
             x: index,
@@ -326,7 +324,7 @@ const Player = () => {
 
       <PlayersByDate data={[{
         id: user.username,
-        data: user.user_skill_history[Object.keys(user.user_skill_history).slice(-1)[0]].slice(1).map((game, index) => {
+        data: user.user_skill_history["0"].slice(1).map((game, index) => {
           return {
             x: game.date.substr(0,10),
             y: game.SR,

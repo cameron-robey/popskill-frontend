@@ -5,7 +5,7 @@ import { config } from './../config';
 
 interface DataContext {
   leaderboard: LeaderboardItem[],
-  getLeaderboard: (force?: boolean, season?: string) => void
+  getLeaderboard: (season?: string, force?: boolean) => void
   users: User[],
   getUser: (user_id: number, force?: boolean) => void
 }
@@ -27,7 +27,7 @@ export const DataProvider: React.FC = ({ children }) => {
   // never happen
   const [ users, setUsers ] = useState<User[]>([]);
 
-  const getLeaderboard = async (force = false, season: string|undefined = undefined) => {
+  const getLeaderboard = async (season: string|undefined = undefined, force = false) => {
     if (leaderboard.length === 0 || force ) {
       const resp = await fetch(`${config.api_url}/v2/leaderboard${season ? `/${season}` : ''}`);
       const json = await resp.json();

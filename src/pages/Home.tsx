@@ -32,7 +32,7 @@ const Home = () => {
 
   useEffect(() => {
     // Get data on page load
-    getLeaderboard();
+    getLeaderboard("0");
   }, []);
 
   useEffect(() => {
