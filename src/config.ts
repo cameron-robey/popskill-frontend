@@ -6,7 +6,7 @@ export const config = {
   ],
   ranking_conditions: {
     days: 14,
-    matches: 10
+    matches: 1
   },
   rating_version: "2",
   trueskill_parameters: {
