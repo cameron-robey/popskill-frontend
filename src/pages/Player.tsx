@@ -90,7 +90,6 @@ const Player = () => {
 
   const updateUser = () => {
     // check we have data for both the leaderboard and the user
-    console.log(user);
     if (Object.keys(user).length === 0 && user.user_id !== Number(playerID)) return;
     
     let rank: string|number = "?";
@@ -108,8 +107,6 @@ const Player = () => {
 
 
     let matchesPlayedIn: Match[] = [];
-
-    // console.log(Object.keys(user.seasons).map(i=>console.log(user.seasons[i])))
 
 
     Object.keys(user.seasons).forEach(i=> matchesPlayedIn = matchesPlayedIn.concat(user.seasons[i]));
@@ -130,8 +127,6 @@ const Player = () => {
       de_train: 0,
       de_vertigo: 0
     }
-
-    console.log(matchesPlayedIn);
     
     matchesPlayedIn.forEach(i=>{
       // Find whether in team 1 or 2
