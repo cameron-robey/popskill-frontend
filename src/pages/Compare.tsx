@@ -21,25 +21,32 @@ interface Params {
 
 const Compare = () => {
   const { playerIDs } = useParams<Params>();
-  const { rankings, getRankings } = useData();
+  const { leaderboard, getLeaderboard } = useData();
+  const { users, getUser } = useData();
   
-  const [displayData, setDisplayData] = useState<User[]>([]);
+  const [compareUsersIDs, setCompareUsersIDs] = useState<string[]>([]);
+  const [compareUsers, setCompareUsers] = useState<User[]>([]);
 
   useEffect(() => {
     // Get data on page load
-    getRankings();
+    getLeaderboard();
   }, []);
 
   useEffect(() => {
-    const filtered = rankings.filter((i: User)=>i.matches_played > 2);
-    const sorted = filtered.sort((a: User,b: User) => b.SR - a.SR );
+    // push data for users we care about into compareUsersIDs
+  const newArr = compareUsersIDs.map(i=> users.filter(j=>String(j.user_id) === i)[0]);
+  setCompareUsers(newArr);
 
+  }, [users]);
+
+  useEffect(() => {
     const ids = playerIDs.split(',');
-    const display = sorted.filter((i:User) => ids.includes(i.user_id));
-    setDisplayData(display);
-  }, [rankings]);
+    setCompareUsersIDs(ids);
 
-  if (Object.keys(displayData).length === 0) {
+    ids.map(i=>getUser(Number(i)));
+  }, [playerIDs]);
+
+  if (compareUsers.length === 0) {
     // Loading
     return <>
       <styles.PageWrapper>
@@ -58,7 +65,7 @@ const Compare = () => {
   }
 
   return <>
-    <PageTitle title={`Comparing ${displayData.length} players`} />
+    <PageTitle title={`Comparing ${compareUsers.length} players`} />
     <styles.PageWrapper>
       <h1>
         <Link to={'/'}>
@@ -71,14 +78,14 @@ const Compare = () => {
         </Link>
       </h1>
 
-      <p>Player data for: <b>{ displayData.map(i=>i.username).join(', ') }</b></p>
+      <p>Player data for: <b>{ compareUsers.map(i=>i.username).join(', ') }</b></p>
       <hr />
 
       <p><b>Rating by date</b></p>
 
-      <PlayersByDate height="800px" data={displayData.map(p => ({
+      <PlayersByDate height="800px" data={compareUsers.map(p => ({
           id: p.username,
-          data: p.user_skill_history.slice(1).map((game, index) => {
+          data: p.user_skill_history[Object.keys(p.user_skill_history).slice(-1)[0]].slice(1).map((game, index) => {
             return {
               x: game.date.substr(0,10),
               y: game.SR

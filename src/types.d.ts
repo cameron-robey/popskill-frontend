@@ -2,7 +2,34 @@ declare module 'num-words';
 
 type valueof<T> = T[keyof T]
 
+interface LeaderboardItem {
+  SR: number,
+  SRvar: number,
+  adr: number,
+  hltv: number,
+  last_diff: number,
+  matches_played: number,
+  rwp: number,
+  user_id: string,
+  username: string
+}
+
 interface User {
+  seasons: {
+    [key: string]: Match[]
+  },
+  user_skill_history: {
+    [key: string]: {
+      match_id: string,
+      date: string,
+      SR: number
+    }[],
+  },
+  user_id: number,
+  username: string
+}
+
+interface UserOld {
   username: string,
   SR: number,
   SRvar: number,
@@ -46,11 +73,11 @@ interface Match {
  },
  date: string,
  match_id: string,
- map: "dust2" | "inferno" | "mirage" | "nuke" | "overpass" | "train" | "vertigo" | undefined
+ map: string
  map_image: string
 }
 
-interface APIMatch extends Omit<Match, "map"|"team1table"|"team2table"> {
+interface APIMatch extends Omit<Match, "team1table"|"team2table"> {
   team1table: {
     [key: string]: APIUserStats
   },

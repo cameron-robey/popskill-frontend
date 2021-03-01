@@ -22,34 +22,26 @@ import { config } from './../config';
 import { rankedFilter, unrankedFilter } from './../helpers/data';
 
 const Home = () => {
-  const { rankings, getRankings } = useData();
-  const { getMatches } = useData();
+  const { leaderboard, getLeaderboard } = useData();
   const { push } = useHistory();
 
-  const [displayData, setDisplayData] = useState<User[]>([]);
-  const [show, setShow] = useState(false);
-
-  const [input, setInput] = useState('');
+  const [displayData, setDisplayData] = useState<LeaderboardItem[]>([]);
 
   const [compareShow, setCompareShow] = useState(false);
   const [compareList, setCompareList] = useState<boolean[]>([]);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   useEffect(() => {
     // Get data on page load
-    getRankings();
-    getMatches();
+    getLeaderboard();
   }, []);
 
   useEffect(() => {
-    const filtered = rankings; //rankings.filter((i: User)=>i.matches_played > 2);
-    const sorted = filtered.sort((a: User,b: User) => b.SR - a.SR );
+    const filtered = leaderboard; //rankings.filter((i: User)=>i.matches_played > 2);
+    const sorted = filtered.sort((a: LeaderboardItem, b: LeaderboardItem) => b.SR - a.SR );
 
     setDisplayData(sorted);
     setCompareList(new Array(sorted.length).fill(false));
-  }, [rankings]);
+  }, [leaderboard]);
 
   const countNumTrue = (arr: boolean[]) => arr.filter(i=>i).length;
 

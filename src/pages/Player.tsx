@@ -22,6 +22,7 @@ interface Params {
 }
 
 interface UserParsedStats {
+  rank: number|string,
   played: number,
   won: number,
   tie: number,
@@ -34,22 +35,24 @@ interface UserParsedStats {
     hltv: number
   },
   maps: {
-    dust2: number,
-    inferno: number,
-    mirage: number,
-    nuke: number,
-    overpass: number,
-    train: number,
-    vertigo: number
+    de_dust2: number,
+    de_inferno: number,
+    de_mirage: number,
+    de_nuke: number,
+    de_overpass: number,
+    de_train: number,
+    de_vertigo: number
   }
 }
 
 const Player = () => {
   const { playerID } = useParams<Params>();
-  const { rankings, getRankings } = useData();
-  const { matches, getMatches } = useData();
+  const { users, getUser } = useData();
+  const { leaderboard, getLeaderboard } = useData();
   
-  const [displayData, setDisplayData] = useState<User>({} as User);
+  const [user, setUser] = useState<User>({} as User);
+  const [leaderboardUser, setLeaderboardUser] = useState<LeaderboardItem>({} as LeaderboardItem);
+
   const [displayMatches, setDisplayMatches] = useState<Match[]>([]);
 
   const [filteredData, setFilteredData] = useState<User[]>([]);
@@ -58,107 +61,126 @@ const Player = () => {
 
   useEffect(() => {
     // Get data on page load
-    getRankings();
-    getMatches();
+    getUser(Number(playerID));
+    getLeaderboard();
   }, []);
 
   useEffect(() => {
     updateUser();
-  }, [rankings]);
+  }, [leaderboard]);
 
   useEffect(() => {
-    setDisplayMatches(matches);
+    // check if data exists for user
+    if (users.filter(i=>i.user_id === Number(playerID)).length > 0) {
+      setUser(users.filter(i=>i.user_id === Number(playerID))[0]);
+    }
+
     updateUser();
-  }, [matches]);
+  }, [users]);
 
   useEffect(() => {
-    // When id changes
+    // When id changes, clear data
     updateUser();
   }, [playerID]);
 
+
+  useEffect(() => {
+    updateUser();
+  }, [user]);
+
   const updateUser = () => {
-    const sorted = rankings.sort((a: User,b: User) => b.SR - a.SR );
+    // check we have data for both the leaderboard and the user
+    console.log(user);
+    if (Object.keys(user).length === 0 && user.user_id !== Number(playerID)) return;
+    
+    let rank: string|number = "?";
 
-    setFilteredData(sorted);
-
-    const player = sorted.filter((i: User) => i.user_id === playerID);
-    if (player.length > 0) {
-      const p = player[0];
-      setDisplayData(p);
-
-      const matchesPlayedIn = matches.filter((i) => p.user_skill_history.map(i=>i.match_id).includes(i.match_id));
-      const matchesWonArr = [];
-      const matchesLostArr = [];
-      const matchesTiedArr = [];
-      let ktotal = 0;
-      let atotal = 0;
-      let dtotal = 0;
-      let hltvtotal = 0;
-      let adrtotal = 0;
-      const maps = {
-        dust2: 0,
-        inferno: 0,
-        mirage: 0,
-        nuke: 0,
-        overpass: 0,
-        train: 0,
-        vertigo: 0
-      }
-      
-      matchesPlayedIn.forEach(i=>{
-        // Find whether in team 1 or 2
-        let team: 1|2 = 2;
-        if (Object.keys(i.team1table).includes(p.user_id)) team = 1;
-        let teamkey: "team1table"|"team2table";
-        teamkey = (team === 1) ? "team1table" : "team2table";
-
-        // Win vs lose
-        if ((team === 1 && i.team1score > i.team2score) || 
-        (team === 2 && i.team2score > i.team1score)) matchesWonArr.push(i);
-        else if (i.team1score === i.team2score) matchesTiedArr.push(i);
-        else matchesLostArr.push(i);
-
-        // Averages
-        ktotal += i[teamkey][p.user_id].K;
-        atotal += i[teamkey][p.user_id].A;
-        dtotal += i[teamkey][p.user_id].D;
-        hltvtotal += i[teamkey][p.user_id].HLTV;
-        adrtotal += i[teamkey][p.user_id].ADR;
-
-        // Maps
-        if (i.map !== undefined) maps[i.map] = maps[i.map] + 1;
-      });
-
-      const newStats: UserParsedStats = {
-        played: matchesPlayedIn.length,
-        won: matchesWonArr.length,
-        tie: matchesTiedArr.length,
-        loss: matchesLostArr.length,
-        averages: {
-          kill: ktotal / matchesPlayedIn.length,
-          assist: atotal / matchesPlayedIn.length,
-          death: dtotal / matchesPlayedIn.length,
-          adr: adrtotal / matchesPlayedIn.length,
-          hltv: hltvtotal / matchesPlayedIn.length
-        },
-        maps: maps
-      }
-
-      setStats(newStats);
-      console.log(newStats);
+    if (leaderboard.length > 0) {
+      const currentUser = leaderboard.find(i=> Number(i.user_id) === user.user_id);
+      if (currentUser) setLeaderboardUser(currentUser);
+      const sorted = leaderboard.sort((a: LeaderboardItem, b: LeaderboardItem) => b.SR - a.SR );
+      rank = sorted.indexOf(sorted.filter(i=>i.user_id === playerID)[0]) + 1;
     }
+
+
+    const id = String(user.user_id);
+
+
+
+    let matchesPlayedIn: Match[] = [];
+
+    // console.log(Object.keys(user.seasons).map(i=>console.log(user.seasons[i])))
+
+
+    Object.keys(user.seasons).forEach(i=> matchesPlayedIn = matchesPlayedIn.concat(user.seasons[i]));
+    const matchesWonArr = [];
+    const matchesLostArr = [];
+    const matchesTiedArr = [];
+    let ktotal = 0;
+    let atotal = 0;
+    let dtotal = 0;
+    let hltvtotal = 0;
+    let adrtotal = 0;
+    let maps = {
+      de_dust2: 0,
+      de_inferno: 0,
+      de_mirage: 0,
+      de_nuke: 0,
+      de_overpass: 0,
+      de_train: 0,
+      de_vertigo: 0
+    }
+
+    console.log(matchesPlayedIn);
+    
+    matchesPlayedIn.forEach(i=>{
+      // Find whether in team 1 or 2
+      let team: 1|2 = 2;
+      if (Object.keys(i.team1table).includes(id)) team = 1;
+      let teamkey: "team1table"|"team2table";
+      teamkey = (team === 1) ? "team1table" : "team2table";
+
+      // Win vs lose
+      if ((team === 1 && i.team1score > i.team2score) || 
+      (team === 2 && i.team2score > i.team1score)) matchesWonArr.push(i);
+      else if (i.team1score === i.team2score) matchesTiedArr.push(i);
+      else matchesLostArr.push(i);
+
+      // Averages
+      ktotal += i[teamkey][id].K;
+      atotal += i[teamkey][id].A;
+      dtotal += i[teamkey][id].D;
+      hltvtotal += i[teamkey][id].HLTV;
+      adrtotal += i[teamkey][id].ADR;
+
+      // Maps
+      if (i.map !== undefined && Object.keys(maps).includes(i.map)) {
+        maps[i.map as keyof typeof maps] = maps[i.map as keyof typeof maps] + 1;
+      }
+
+    });
+
+    const newStats: UserParsedStats = {
+      rank: rank,
+      played: matchesPlayedIn.length,
+      won: matchesWonArr.length,
+      tie: matchesTiedArr.length,
+      loss: matchesLostArr.length,
+      averages: {
+        kill: ktotal / matchesPlayedIn.length,
+        assist: atotal / matchesPlayedIn.length,
+        death: dtotal / matchesPlayedIn.length,
+        adr: adrtotal / matchesPlayedIn.length,
+        hltv: hltvtotal / matchesPlayedIn.length
+      },
+      maps: maps
+    }
+
+    setStats(newStats);
+
   }
 
-  const getRank = () => {
-    // Check if user should have rank
-    if (rankedFilter(displayData)) {
-      // Work out rank
-      return rankings.filter(rankedFilter).indexOf(displayData) + 1;
-    } else return '? - Play more games to get ranked'
-  }
-
-
-  if (Object.keys(displayData).length === 0 || matches.length === 0) {
+  if (user.user_id === undefined || stats.averages === undefined) {
     // Loading
     return <>
       <styles.PageWrapper>
@@ -178,9 +200,9 @@ const Player = () => {
 
   return <>
     <PageTitle 
-      title={displayData.username}
-      metaDescription={`Statistics for ${displayData.username}. Current rank: ${getRank()}. Average HLTV rating: ${stats.averages.hltv}. View page for more detailed statistics...`}
-      metaTitle={displayData.username}
+      title={user.username}
+      metaDescription={`Statistics for ${user.username}. Current rank: ${stats.rank}. Average HLTV rating: ${stats.averages.hltv}. View page for more detailed statistics...`}
+      metaTitle={user.username}
       metaSiteName={config.name}
     />
 
@@ -195,8 +217,8 @@ const Player = () => {
           </styles.VerticalAlignWrapper>
         </Link>
       </h1>
-      <h4>Player data for: <b>{ displayData.username }</b></h4>
-      <p>Current rating: <b>{ displayData.SR }</b> | Current rank: <b>{ getRank() }</b></p>
+      <h4>Player data for: <b>{ user.username }</b></h4>
+      <p>Current rating: <b>{ leaderboardUser.SR }</b> | Current rank: <b>{ stats.rank }</b></p>
 
       <hr />
 
@@ -257,6 +279,8 @@ const Player = () => {
         <styles.InlineWrapper>
           <p><b>Matches played by map</b></p>
 
+          {/* TODO: make this part automatic with maps (so new maps can be added) */}
+
           <styles.StatsTable>
             <thead className="thead-dark">
               <tr>
@@ -271,13 +295,13 @@ const Player = () => {
             </thead>
             <tbody>
               <tr>
-                <td>{stats.maps.dust2}</td>
-                <td>{stats.maps.inferno}</td>
-                <td>{stats.maps.mirage}</td>
-                <td>{stats.maps.nuke}</td>
-                <td>{stats.maps.overpass}</td>
-                <td>{stats.maps.train}</td>
-                <td>{stats.maps.vertigo}</td>
+                <td>{stats.maps.de_dust2}</td>
+                <td>{stats.maps.de_inferno}</td>
+                <td>{stats.maps.de_mirage}</td>
+                <td>{stats.maps.de_nuke}</td>
+                <td>{stats.maps.de_overpass}</td>
+                <td>{stats.maps.de_train}</td>
+                <td>{stats.maps.de_vertigo}</td>
               </tr>
             </tbody>
           </styles.StatsTable>
@@ -289,16 +313,16 @@ const Player = () => {
       <p><b>Rating by game</b></p>
 
       <PlayerByGame data={{
-        id: displayData.username,
+        id: user.username,
         color: "hsl(337, 70%, 50%)",
-        data: displayData.user_skill_history.map((game, index) => {
+        data: user.user_skill_history[Object.keys(user.user_skill_history).slice(-1)[0]].map((game, index) => {
 
           return {
             x: index,
             y: game.SR,
             matchID: game.match_id,
             matchDetails: displayMatches.find(i=>i.match_id === game.match_id),
-            userID: displayData.user_id
+            userID: String(user.user_id)
           }
         })
       }} />
@@ -306,8 +330,8 @@ const Player = () => {
       <p><b>Rating by date</b></p>
 
       <PlayersByDate data={[{
-        id: displayData.username,
-        data: displayData.user_skill_history.slice(1).map((game, index) => {
+        id: user.username,
+        data: user.user_skill_history[Object.keys(user.user_skill_history).slice(-1)[0]].slice(1).map((game, index) => {
           return {
             x: game.date.substr(0,10),
             y: game.SR,

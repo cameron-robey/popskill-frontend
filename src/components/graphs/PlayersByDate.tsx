@@ -51,9 +51,7 @@ const PlayersByDate: React.FC<GraphData> = ({ data, height }) => {
       if (max > gmax) gmax = max;
       if (min < gmin || gmin === -1) gmin = min;
     });
-    console.log(gmax, gmin)
     let length = ((gmax - gmin) / 200) + 1;
-    console.log(data);
     return Array.from({length: length}, (_, i) => (i*200 + gmin));
   }
 
