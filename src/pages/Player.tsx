@@ -172,7 +172,8 @@ const Player = () => {
     }
 
     setStats(newStats);
-
+    
+    setDisplayMatches(user.seasons[Object.keys(user.seasons).slice(-1)[0]]);
   }
 
   if (user.user_id === undefined || stats.averages === undefined) {
