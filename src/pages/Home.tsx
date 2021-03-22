@@ -75,7 +75,7 @@ const Home = () => {
             <td>Name</td>
             <td><b>Rating</b></td>
             <td>Matches Played</td>
-            <td>RW%</td>
+            <td>Win%</td>
             <td>ADR</td>
             <td>HLTV</td>
           </tr>
@@ -96,7 +96,7 @@ const Home = () => {
               </styles.DiffChange>
             </td>
             <td>{player.matches_played}</td>
-            <td>{Math.floor(player.rwp*100) + "%"}</td>
+            <td>{Math.floor(player.mwp*100) + "%"}</td>
             <td>{Math.floor(player.adr)}</td>
             <td>{player.hltv.toFixed(2)}</td>
           </tr>)}
@@ -114,7 +114,7 @@ const Home = () => {
             <td>Name</td>
             <td><b>Rating</b></td>
             <td>Matches Played</td>
-            <td>RW%</td>
+            <td>Win%</td>
             <td>ADR</td>
             <td>HLTV</td>
           </tr>
@@ -135,7 +135,7 @@ const Home = () => {
               </styles.DiffChange>
             </td>
             <td>{player.matches_played}</td>
-            <td>{Math.floor(player.rwp*100) + "%"}</td>
+            <td>{Math.floor(player.mwp*100) + "%"}</td>
             <td>{Math.floor(player.adr)}</td>
             <td>{player.hltv.toFixed(2)}</td>
           </tr>)}
