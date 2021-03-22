@@ -10,6 +10,7 @@ interface LeaderboardItem {
   last_diff: number,
   matches_played: number,
   rwp: number,
+  mwp: number,
   user_id: string,
   username: string
 }
